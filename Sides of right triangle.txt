@@ -1,0 +1,43 @@
+use std::io;
+
+fn main(){
+    let mut input = String::new();
+    let mut arr : [ i32 ; 3 ] = [ 0 ; 3 ];
+    let mut sum = 0;
+    
+    for i in 0..arr.len() {
+        println!("Enter Length of side {} :",i+1);
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for side {}",i+1).as_str());
+        input.pop();
+        
+        arr[i] = input.trim().parse().unwrap();
+        input.clear();
+    }
+    let (indexLargest,valueLargest) = findLargestNum(arr);
+   
+    for i in 0..arr.len() {
+        if i != indexLargest && arr[i] != valueLargest {
+            sum += arr[i].pow(2 as u32);
+        }
+    }
+    if sum == valueLargest.pow(2 as u32){
+        println!("The sides form a right triangle");
+    }
+    else {
+        println!("The sides do not form a right triangle");
+    }
+}
+
+fn findLargestNum(arr : [i32 ; 3]) -> (usize,i32) {
+    let mut largest = 0;
+    let mut i = 0;
+    
+    for (index,&value) in arr.iter().enumerate() {
+        if largest < value {
+            i = index;
+            largest = value;
+        }
+    }
+    
+    return (i as usize,largest);
+}
