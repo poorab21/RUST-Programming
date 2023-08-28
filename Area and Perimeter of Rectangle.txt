@@ -1,0 +1,35 @@
+use std::io;
+fn main() {
+    let mut width = String::new();
+    let mut height = String::new();
+    
+    println!("Enter width of rectangle:");
+    io::stdin().read_line(&mut width).expect("Something went wrong");
+    
+    println!("Enter height of rectangle:");
+    io::stdin().read_line(&mut height).expect("Something went wrong");
+    
+    let width : i32 = width.trim().parse().unwrap();
+    let height : i32 = height.trim().parse().unwrap();
+    let area = (width*height).to_string();
+    let perimeter = (2*width + 2*height).to_string();
+    
+    for i in 1..=height+2 {
+        for j in 1..=width {
+            if i == 1 {
+                print!("_");
+            }
+            else if i == height+2 {
+                print!("_");
+            }
+            else if i > 1 && i < height+2 && (j == 1 || j == width) {
+                print!("|")
+            }
+            else if i > 1 && i < height+2 {
+                print!(" ");
+            }
+        }
+        print!("\n");
+    }
+    println!("Area = {} , Perimeter = {}",area,perimeter);
+}

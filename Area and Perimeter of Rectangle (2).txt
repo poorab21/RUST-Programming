@@ -1,0 +1,70 @@
+use
+  std::io;
+fn
+main ()
+{
+  let mut
+    width = String::new ();
+  let mut
+    height = String::new ();
+
+  println ! ("Enter width of rectangle:");
+  io::stdin ().read_line (&mut width).expect ("Something went wrong");
+
+  println ! ("Enter height of rectangle:");
+  io::stdin ().read_line (&mut height).expect ("Something went wrong");
+
+  let
+    width:
+    i32 = width.trim ().parse ().unwrap ();
+  let
+    height:
+    i32 = height.trim ().parse ().unwrap ();
+  let
+    area = (width * height).to_string ();
+  let
+    perimeter = (2 * width + 2 * height).to_string ();
+  let
+    areaString = format ! ("Area = {}", area);
+  let
+    perimeterString = format ! ("Perimeter = {}", perimeter);
+
+  for i
+    in 1.. = height * 10
+    {
+      for j
+	in 1.. = width * 15
+	{
+	  if i
+	    == 1
+	    {
+	      print ! ("_");
+	    }
+	  else if i
+	    == height * 10
+	    {
+	    print ! ("_")}
+	  else if i
+	    >1 && i < height * 10 && (j == 0 || j == width * 15)
+	    {
+	    print ! ("|")}
+	  else if i
+	    == (height * 10) / 2 && j >= 1 && j as usize <= areaString.len ()
+	    {
+	    print ! ("{}", areaString.as_bytes ()[j as usize - 1] as char)}
+	  else if i
+	    == (height * 10 / 2) + 1 && j >= 1
+	      && j as usize <= perimeterString.len ()
+	    {
+	    print ! ("{}",
+		       perimeterString.as_bytes ()[j as usize - 1] as char)}
+	  else if i
+	    >1 && i < height * 10 && (j > 0 && j < width * 15)
+	    {
+	      print ! (" ");
+	    }
+	}
+      print ! ("\n");
+    }
+  println ! ("Area = {} , Perimeter = {}", area, perimeter);
+}
