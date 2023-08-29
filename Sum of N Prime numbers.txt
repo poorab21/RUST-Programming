@@ -1,0 +1,29 @@
+use std::io;
+
+fn main(){
+    let mut numOfPrimes = String::new();
+    let mut n: i32 = 2;
+    let mut sum : i32 = 0;
+    
+    println!("Enter number of primes:");
+    io::stdin().read_line(&mut numOfPrimes).expect("Something went wrong while processing input for number of primes");
+    numOfPrimes.pop();
+    
+    let mut numOfPrimes : i32 = numOfPrimes.trim().parse().unwrap();
+    
+    while numOfPrimes > 0 {
+        if isPrime(n) { numOfPrimes -= 1 ; sum += n ; n += 1 }
+        else { n += 1; }
+    }
+    println!("Sum of Primes = {}",sum);
+}
+
+fn isPrime(num : i32) -> bool {
+    if num == 0 || num == 1 { return false; }
+    
+    for i in 2..num {
+        if num % i == 0 { return false; }
+    }
+    
+    return true;
+}
