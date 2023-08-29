@@ -1,0 +1,45 @@
+use std::io;
+
+fn main(){
+    let mut arr : [ f32 ; 10 ] = [ 0 as f32 ; 10 ];
+    let mut input = String::new();
+    
+    for i in 0..arr.len() {
+        println!("Enter Number:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of Array",i).as_str());
+        input.pop();
+        
+        arr[i] = input.trim().parse().unwrap();
+        input.clear();
+    }
+    
+    let largestNum = findLargest(arr);
+    let smallestNum = findSmallest(arr,largestNum);
+    
+    println!("Largest Number = {}",largestNum);
+    println!("Smallest Number = {}",smallestNum);
+    println!("Value = {}",largestNum - smallestNum);
+}
+
+fn findLargest(arr : [ f32 ; 10 ]) -> f32 {
+    let mut largest : f32 = 0 as f32;
+    
+    for i in 0..arr.len() {
+        if arr[i] > largest {
+            largest = arr[i];
+        }
+    }
+    
+    return largest;
+}
+
+fn findSmallest(arr : [ f32 ; 10 ] , largestNum : f32) -> f32 {
+    let mut smallest : f32 = largestNum;
+    
+    for i in 0..arr.len() {
+        if arr[i] < smallest {
+            smallest = arr[i];
+        }
+    }
+    return smallest;
+}
