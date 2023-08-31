@@ -1,0 +1,34 @@
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    let mut arr : [ i32 ; 9 ] = [0 ; 9];
+    let mut index = -1;
+    
+    for i in 0..arr.len() {
+        println!("Enter element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+        
+        arr[i] = input.trim().parse().unwrap();
+        input.clear();
+    }
+    
+    for i in 0..arr.len() {
+        if arr[i] % 2 == 0 { continue; }
+        else if arr[i] %2 != 0 {
+            for j in i+1..arr.len() {
+                if arr[j] % 2 == 0 { index = j as i32; break;  }
+            }
+        }
+        
+        if index != -1 {
+            arr[i] += arr[index as usize];
+            arr[index as usize] = arr[i] - arr[index as usize];
+            arr[i] -= arr[index as usize];
+            index = -1;
+        }
+        else { break; }
+    }
+    println!("{:?}",arr);
+}
