@@ -1,0 +1,24 @@
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    let mut arr : [i32 ; 9] = [0 ; 9];
+    let mut count = 0;
+    
+    for i in 0..arr.len() {
+        println!("Enter element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+        
+        arr[i] = input.trim().parse().unwrap();
+        input.clear();
+    }
+    
+    'outerloop : for i in 0..arr.len() {
+        for j in i..arr.len() {
+            if arr[i] == arr[j] { count += 1; }
+            if count == 2 { println!("First repeating element = {}",arr[i]) ; break 'outerloop; }
+        }
+        count = 0;
+    }
+}
