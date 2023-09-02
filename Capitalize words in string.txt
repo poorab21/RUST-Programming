@@ -1,0 +1,22 @@
+use std::io;
+
+fn main() {
+    let mut input = String::from("");
+    
+    println!("Enter element:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for string");
+    input.pop();
+    
+    for i in 0..input.trim().len() - 1 {
+        let currChar = input.chars().nth(i).unwrap() as u8;
+        let nextChar = input.chars().nth(i+1).unwrap() as u8;
+        
+        if currChar == 32 && nextChar >= 97 && nextChar <= 122 {
+            input.replace_range( i+1..i+2 , format!("{}",(nextChar - 32u8) as char).as_str() );
+        }
+        else if i == 0 && currChar >= 97 && nextChar <= 122 {
+            input.replace_range( i..i+1 , format!("{}",(currChar - 32u8) as char).as_str() );
+        }
+    }
+    println!("{}",input);
+}
