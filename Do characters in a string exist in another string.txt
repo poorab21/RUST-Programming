@@ -1,0 +1,31 @@
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    let mut input2 = String::new();
+    
+    println!("Enter string:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for first string");
+    input.pop();
+    
+    println!("Enter second string:");
+    io::stdin().read_line(&mut input2).expect("Something went wrong while processing input for second string");
+    input.pop();
+    
+    for (i,c) in input2.trim().chars().enumerate() {
+        if alreadyExists(&input2,c,i) { continue; }
+        
+        if input.contains(c) == false {
+            println!("false");
+            return;
+        }
+    }
+    println!("True");
+}
+
+fn alreadyExists( s : &String , c : char , index : usize ) -> bool {
+    for i in 0..index {
+        if s.chars().nth(i).unwrap() == c { return true; }
+    }
+    false
+}
