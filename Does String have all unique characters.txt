@@ -1,0 +1,26 @@
+use std::io;
+
+fn main(){
+    let mut input = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for string");
+    input.pop();
+    
+    for i in 0..input.len() {
+        if hasOccurred( i , &input ) {
+            println!("String does not have all unique characters");
+            return;
+        }
+    }
+    println!("String has all unique characters");
+}
+
+fn hasOccurred( index : usize , s : &String ) -> bool {
+    for i in 0..index {
+        if s.chars().nth(i).unwrap() == s.chars().nth(index).unwrap() {
+            return true;
+        }
+    }
+    false
+}
