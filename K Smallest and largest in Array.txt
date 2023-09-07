@@ -1,0 +1,52 @@
+use std::io;
+
+fn main(){
+    let mut size = 0;
+    let mut arr : Vec<i32> = Vec::new();
+    let mut input = String::new();
+    let mut kSmallest = 0;
+    let mut kLargest = 0;
+    
+    println!("Enter size:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for size");
+    input.pop();
+    
+    size = input.trim().parse().unwrap();
+    input.clear();
+    
+    for i in 0..size {
+        println!("Enter element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+        
+        arr.push(input.trim().parse().unwrap());
+        input.clear();
+    }
+    
+    println!("find Kth smallest element ?");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input k smallest value");
+    input.pop();
+    
+    kSmallest = input.trim().parse().unwrap();
+    input.clear();
+    
+    println!("find Kth largest element ?");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for k largest value");
+    input.pop();
+    
+    kLargest = input.trim().parse().unwrap();
+    input.pop();
+    
+    for i in 0..arr.len() {
+        for j in i..arr.len() {
+            if arr.get(i).unwrap() > arr.get(j).unwrap() {
+                arr[i] += arr[j];
+                arr[j] = arr[i] - arr[j];
+                arr[i] -= arr[j];
+            }
+        }
+    }
+    
+    println!("K smallest = {}",arr.get( kSmallest-1 ).unwrap());
+    println!("K largest = {}",arr.get( arr.len() -kLargest ).unwrap());
+}

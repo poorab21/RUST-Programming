@@ -1,0 +1,44 @@
+use std::io;
+
+fn main(){
+    let mut arr : Vec<i32>  = Vec::new();
+    let mut input = String::new();
+    let mut size = 0;
+    
+    println!("Enter Array size:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for array size");
+    input.pop();
+    
+    size = input.trim().parse().unwrap();
+    input.clear();
+    
+    for i in 0..size {
+        println!("Enter Element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        arr.push(input.trim().parse().unwrap());
+        input.clear();
+    }
+    
+    let mut largest = findMaximum(&arr);
+    let mut smallest = findMinimum(&arr,largest);
+    
+    println!("Smallest element = {} \nLargest element = {}",smallest,largest);
+}
+
+fn findMaximum( arr : &Vec<i32> ) -> i32 {
+    let mut x = 0;
+    
+    for i in arr {
+        if *i > x { x = *i }
+    }
+    x
+}
+
+fn findMinimum( arr : &Vec<i32> , largest : i32 ) -> i32 {
+    let mut smallest = largest;
+    
+    for i in arr {
+        if *i < smallest { smallest = *i }
+    }
+    smallest
+}

@@ -1,0 +1,26 @@
+use std::io;
+
+fn main(){
+    let mut arr : Vec<i32> = Vec::new();
+    let mut size = 0;
+    let mut input = String::new();
+    
+    println!("Enter size:");
+    io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for size").as_str());
+    input.pop();
+    
+    size = input.trim().parse().unwrap();
+    input.clear();
+    
+    for i in 0..size {
+        println!("Enter element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+        
+        arr.push(input.trim().parse().unwrap());
+        input.clear();
+    }
+    
+    arr = arr.into_iter().rev().collect();
+    println!("{:?}",arr);
+}
