@@ -1,0 +1,22 @@
+use std::io;
+
+fn main(){
+    let mut v = vec![15,12,1,20,15,1,9];
+    let mut i = 0;
+    
+    while i < v.len() {
+        if alreadyExists(&v,i) {
+            v.remove(i);
+            continue;
+        }
+        i += 1;
+    }
+    println!("{:?}",v);
+}
+
+fn alreadyExists( arr : &Vec<i32> , index  : usize ) -> bool {
+    for i in 0..index {
+        if arr[i] == arr[index] { return true; }
+    }
+    false
+}
