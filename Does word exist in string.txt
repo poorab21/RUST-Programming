@@ -1,0 +1,29 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let word_to_search = "sir";
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    for word in s.split(" ") {
+        if Equals(word,word_to_search) {
+            println!("word exists in string");
+            return;
+        }
+    }
+    println!("word does not exist in string");
+}
+
+fn Equals( s1 : &str , s2 : &str ) -> bool {
+    if s1.len() != s2.len() { return false; }
+    
+    for i in 0..s1.len() {
+        if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
+            return false;
+        }
+    }
+    true
+}

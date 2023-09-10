@@ -1,0 +1,37 @@
+use std::io;
+
+fn main(){
+    let mut s = String::new();
+    let mut s2 = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for first string");
+    s.pop();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s2).expect("Something went wrong while processing input for second string");
+    s2.pop();
+    
+    
+    if Equal( &mut s , &mut s2) {
+        println!("Both strings are equal");
+    }
+    else {
+        println!("Both strings are unequal");
+    }
+}
+
+fn Equal( s1 : &mut str , s2 : &mut str ) -> bool {
+    
+    if s1.len() != s2.len() { return false; }
+    
+    let mut i = 0;
+    
+    for i in 0..s1.len() {
+        if s1.chars().nth(i).unwrap() != s2.chars().nth(i).unwrap() {
+            return false;
+        }
+    }
+    
+    true
+}
