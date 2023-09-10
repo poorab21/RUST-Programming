@@ -1,0 +1,23 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut name = String::from("");
+
+    println!("Enter Full name:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for full name");
+    s.pop();
+
+    let vec1 : Vec<&str> = s.split(" ").collect();
+
+    for i in 0..=vec1.len()-1 {
+        if i < vec1.len() - 1 {
+            name += format!("{}.",vec1[i].chars().nth(0).unwrap()).as_str();
+        }
+        else if i == vec1.len() - 1 {
+            name += format!(" {}",vec1[i]).as_str();
+        }
+    }
+
+    println!("{}",name.trim());
+}
