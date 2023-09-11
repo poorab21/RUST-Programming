@@ -1,0 +1,41 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut vowels = 0;
+    let mut consonants = 0;
+    let mut whitespaces = 0;
+    let mut digits = 0;
+
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+
+    for c in s.chars() {
+        if isVowel(c) { vowels += 1; }
+        else if isAlphabet(c) { consonants += 1; }
+        else if isDigit(c) { digits += 1; }
+        else if c == ' ' { whitespaces += 1; }
+    }
+
+    println!("Vowels = {}\nConsonants = {}\nWhitespaces = {}\nDigits = {}",vowels,consonants,whitespaces,digits);
+}
+
+fn isVowel( c : char ) -> bool {
+    if c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' {
+        true
+    }
+    else {
+        false
+    }
+}
+
+fn isAlphabet( c: char ) -> bool {
+    if c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' { true }
+    else { false }
+}
+
+fn isDigit( c : char ) -> bool  {
+    if c >= '0' && c <= '9' { true }
+    else { false }
+}

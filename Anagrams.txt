@@ -1,0 +1,43 @@
+use std::io;
+fn main() {
+    let mut s = String::new();
+    let mut s2 = String::new();
+    let mut i = 0;
+    let mut c1 = ' ';
+    let mut c2 = ' ';
+    let mut j = 0;
+
+    println!("Enter First String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for the first string");
+    s.pop();
+
+    println!("Enter Second String:");
+    io::stdin().read_line(&mut s2).expect("Something went wrong while processing input for the second string");
+    s2.pop();
+
+    if s.len() != s2.len() { println!("Strings are not anagrams of each other"); return; }
+
+    while i < s.len() {
+        c1 = s.chars().nth(i).unwrap();
+        c2 = s2.chars().nth(i).unwrap();
+
+        if c1 == c2 { i += 1; continue; }
+
+        j = i + 1;
+        while j < s.len() {
+            if s.chars().nth(j).unwrap() == s2.chars().nth(i).unwrap() {
+                let sub = s.chars().nth(i).unwrap();
+                s.replace_range(i..i+1,format!("{}",s.chars().nth(j).unwrap()).as_str());
+                s.replace_range(j..j+1,format!("{}",sub).as_str());
+                break;
+            }
+            j += 1;
+        }
+
+        if j == s.len() { println!("Strings are not anagrams of each other"); return; }
+
+        i += 1;
+    }
+
+    println!("Strings are anagrams of each other");
+}

@@ -1,0 +1,32 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+
+    let mut strRef = &mut s;
+
+    for i in 0..strRef.len() {
+        let character = strRef.chars().nth(i).unwrap();
+        if !isVowel(character) && isAlphabet(character) { strRef.replace_range(i..i+1,"\0"); } 
+    }
+
+    println!("{}",s);
+}
+
+fn isVowel( c : char ) -> bool {
+    if c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U' {
+        true
+    }
+    else {
+        false
+    }
+}
+
+fn isAlphabet( c: char ) -> bool {
+    if c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' { true }
+    else { false }
+}

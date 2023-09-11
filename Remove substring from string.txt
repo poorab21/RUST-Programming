@@ -1,0 +1,27 @@
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    let mut word = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut input).expect("Something went wrong while processing input for string");
+    input.pop();
+    
+    println!("Enter word to remove:");
+    io::stdin().read_line(&mut word).expect("Something went wrong while processing input for word");
+    word.pop();
+    
+    let mut input : Vec<String> = input.split(" ").map(|w| {
+        if w != word.as_str() { 
+            w.to_string() + " "
+        }
+        else { "".to_string() }
+    }).collect::<Vec<String>>();
+    
+    let input = input.iter().map(|x| {
+        x.to_string()
+    }).collect::<String>();
+    
+    println!("{}",input);
+}

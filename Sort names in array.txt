@@ -1,0 +1,30 @@
+use std::io;
+
+fn main() {
+    let mut input = String::new();
+    let mut sub = "";
+    
+    let mut arr = [
+        "Zark" ,
+        "Villian" ,
+        "Sonnor" ,
+        "pawan" ,
+        "lozniak" ,
+        "Jam" ,
+        "Jeff" ,
+        "Deith" ,
+        "Bex" ,
+        "bark"
+    ];
+    
+    for i in 0..arr.len() {
+        for j in i+1..arr.len() {
+            if arr[i].to_ascii_lowercase().chars().nth(0).unwrap() > arr[j].to_ascii_lowercase().chars().nth(0).unwrap() {
+                sub = arr[i];
+                arr[i] = arr[j];
+                arr[j] = sub;
+            }
+        }
+    }
+    println!("{:?}",arr);
+}

@@ -1,0 +1,48 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut s2 = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    if s.len() <= 0 { return; }
+     
+    for word in s.trim().split(" ") {
+        if isPallindrome(word) {
+            s2 += (newWord(word.len()) + " ").as_str();
+        }
+        else {
+            s2 += format!("{} ",word).as_str();
+        }
+    }
+    s = s2;
+    println!("{}",s);
+}
+
+fn isPallindrome( s : &str ) -> bool {
+    let mut start = 0;
+    let mut end = s.len() - 1;
+    
+    while start < end {
+        if s.chars().nth(start).unwrap().to_ascii_lowercase() == s.chars().nth(end).unwrap().to_ascii_lowercase() {
+            start += 1;
+            end -= 1;
+        }
+        else {
+            return false;
+        }
+    }
+    true
+}
+
+fn newWord( WordLength : usize ) -> String {
+    let mut newWord = String::new();
+    
+    for i in 0..WordLength {
+        newWord += "*";
+    }
+    newWord
+}

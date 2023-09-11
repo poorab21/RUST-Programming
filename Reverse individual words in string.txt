@@ -1,0 +1,17 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut sub = String::new();
+
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+
+    for word in s.split(" ") {
+        sub += format!("{} ",word.to_string().chars().rev().collect::<String>()).as_str();
+    }
+
+    s = sub;
+    println!("{}",s);
+}

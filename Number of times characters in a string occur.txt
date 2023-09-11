@@ -1,0 +1,42 @@
+use std::io;
+
+fn main() {
+    let mut index = 0;
+    let mut max = 0;
+    let mut count = 0;
+    let mut s = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    if s.len() <= 0 { return; }
+    
+    s = s.to_ascii_lowercase();
+    
+    for i in 0..s.len() {
+        if hasOccurred(&s,i) || s.bytes().nth(i).unwrap() == 32 { continue; }
+        
+        for j in i..s.len() {
+            
+            if s.chars().nth(i).unwrap() == s.chars().nth(j).unwrap() {
+                count += 1;
+            }
+        }
+        
+        if count > max { max = count; index = i; }
+        
+        println!("{} occurs {} times",s.chars().nth(i).unwrap(),count);
+        count = 0;
+    }
+    println!("{} occurs maximum number of times",s.chars().nth(index).unwrap());
+}
+
+fn hasOccurred( s : &str , index : usize ) -> bool {
+    for i in 0..index {
+        if s.chars().nth(i).unwrap() == s.chars().nth(index).unwrap() {
+            return true;
+        }
+    }
+    false
+}

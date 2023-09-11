@@ -1,0 +1,31 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut index  = 0;
+    let mut max = 0;
+    let mut min = 0;
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    for (i,word) in s.split(" ").enumerate() {
+        if word.len() > max {
+            max = word.len();
+            index = i;
+        }
+    }
+    println!("Largest word = {}",s.split(" ").nth(index).unwrap());
+    
+    min = max;
+    
+    for (i,word) in s.split(" ").enumerate() {
+        if word.len() < min {
+            min = word.len();
+            index = i;
+        }
+    }
+    
+    println!("Smallest word = {}",s.split(" ").nth(index).unwrap());
+}
