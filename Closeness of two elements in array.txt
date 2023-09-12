@@ -1,0 +1,41 @@
+fn minimumDistance( arr : &[&str] , word1 : &str , word2 : &str ) -> i32 {
+    let mut d1 = -1;
+    let mut d2 = -1;
+    let mut min = (arr.len() - 1) as i32;
+    
+    for (index,&word) in arr.iter().enumerate() {
+       if word == word1 && word == word2 { return 0; } 
+        
+        if word == word1 {
+            d1 = index as i32;
+        }
+        
+        else if word == word2 {
+            d2 = index as i32;
+        }
+        
+        let distance = (d1 - d2).abs() as i32;
+        if d1 >= 0 && d2 >= 0 && distance < min {
+            min = distance;
+        }
+    }
+    min
+}
+
+fn main() {
+    let arr = [ 
+    "quick" ,
+    "brown" ,
+    "fox" ,
+    "willy" ,
+    "vito" ,
+    "Andy" ,
+    "Vince"
+    ];
+    
+    let word1 = "willy";
+    let word2 = "Vince";
+    
+    let distance = minimumDistance(&arr,word1,word2);
+    println!("minimum distance = {}",distance);
+}

@@ -1,0 +1,29 @@
+use std::collections::HashMap;
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut alphabets = HashMap::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    for c in s.to_ascii_lowercase().chars() {
+        if c < 'a' || c > 'z' {
+            continue;
+        }
+        
+        if let None = alphabets.get(&c) {
+            alphabets.insert(c,1);
+        }
+    }
+    
+    for i in 'a'..'z' {
+        if let None = alphabets.get(&i) {
+            println!("String is not a pangram");
+            return;
+        }
+    }
+    println!("String is a pangram");
+}

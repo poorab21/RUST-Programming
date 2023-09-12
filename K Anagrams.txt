@@ -1,0 +1,48 @@
+use std::io;
+use std::collections::HashMap;
+
+fn main() {
+    let mut characters = HashMap::new();
+    let mut s = String::new();
+    let mut s2 = String::new();
+    let mut k = String::new();
+    let mut variations = 0;
+
+    println!("Enter First Word:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for first word");
+    s.pop();
+
+    println!("Enter Second Word:");
+    io::stdin().read_line(&mut s2).expect("Something went wrong while processing input for second word");
+    s2.pop();
+
+    println!("Enter K:");
+    io::stdin().read_line(&mut k).expect("Something went wrong while processing input for K value");
+    k.pop();
+    
+    if s.len() != s2.len() { println!("Strings are not K anagrams"); return; }
+
+    let k : i32 = k.trim().parse().unwrap();
+
+    for character in s.chars() {
+        if let None = characters.get(&character) { characters.insert(character,1); }
+        else { 
+            let count = characters.get(&character).unwrap();
+            characters.insert(character,count+1);
+         }
+    }
+    
+    for character in s2.chars() {
+        if let Some(n) = characters.get(&character) { 
+            let count = *n - 1;
+            if count >= 0 { characters.insert(character,count); } 
+        }
+    }
+    
+    for (key,value) in characters {
+        variations += value;
+    }
+
+    if variations <= k { println!("Strings are K anagrams"); }
+    else { println!("Strings are not K anagrams"); }
+}

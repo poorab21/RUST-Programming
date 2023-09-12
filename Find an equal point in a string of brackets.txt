@@ -1,0 +1,28 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut openings = 0;
+    let mut closings = 0;
+
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+
+    for i in 0..=s.len() {
+        
+        for j in 0..i {
+            if s.chars().nth(j).unwrap() == '(' { openings += 1; }
+        }
+
+        for j in i..s.len() {
+            if s.chars().nth(j).unwrap() == ')' { closings += 1; }
+        }
+
+        if openings == closings { println!("{}",i); return; }
+        openings = 0;
+        closings = 0;
+    }
+
+    println!("No equal point found");
+}

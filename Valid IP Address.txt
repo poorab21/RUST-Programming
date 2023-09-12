@@ -1,0 +1,23 @@
+use std::io;
+
+fn main() {
+    let mut ip = String::new();
+    
+    println!("Enter IP Address:");
+    io::stdin().read_line(&mut ip).expect("Something went wrong while processing input for IP Address");
+    ip.pop();
+
+    for i in ip.split(".") {
+        let mut num = 0;
+
+        if i.len() > 3 { println!("Invalid IP Address"); return; }
+
+        for c in i.chars() {
+            num = (num * 10) + (c as i32 - '0' as i32);
+        }
+
+        if num < 0 || num > 255 { println!("Invalid IP Address"); return; }
+    }
+
+    println!("Valid IP Address");
+}
