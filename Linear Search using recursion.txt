@@ -1,0 +1,18 @@
+fn findElement( arr : &[i32] , index : usize , element : i32 ) -> i32 {
+    if index >= arr.len() { return -1; }
+    if arr[index] == element { return index as i32; }
+    findElement( arr , index + 1 , element )
+}
+
+fn main() {
+    let arr = [ 1, 2, 3, 4, 5, 6, 6, 8, 9, 10 ];
+    let num = 2;
+    
+    let result = findElement( &arr, 0, 6 );
+    
+    if result == -1 {
+        println!("Element does not exist in array");
+        return;
+    }
+    println!("Element occurs at index {} of array",result);
+}
