@@ -1,0 +1,66 @@
+use std::io;
+
+fn main() {
+    let mut arr : Vec<i32> = Vec::new();
+    let mut size  = String::new();
+    let mut input = String::new();
+    let mut maximum_distance = 0;
+    let mut minimum_distance = 0;
+    let mut minimum_tuple = (0,0);
+    let mut maximum_tuple = (0,0);
+
+    println!("Enter Size:");
+    io::stdin().read_line(&mut size).expect("Something went wrong while processing input for size");
+    size.pop();
+
+    let size : i32 = size.trim().parse().unwrap();
+
+    for i in 0..size {
+        println!("Enter Element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+
+        arr.push( input.trim().parse::<i32>().unwrap() );
+        input.clear();
+    }
+
+    let largest = get_largest( &arr );
+    let smallest = get_smallest( &arr , largest );
+    maximum_tuple = ( largest , smallest ) ;
+    minimum_distance = largest - smallest;
+
+    for i in 0..size {
+        for j in i+1..size {
+            let x = arr.get(i as usize).unwrap();
+            let y = arr.get(j as usize).unwrap();
+
+            if (x - y).abs() <= minimum_distance {
+                minimum_distance = (x - y).abs();
+                minimum_tuple = ( *x , *y );
+            }
+
+        }
+    }
+    println!("Array pair with minimum distance = {:?}",minimum_tuple);
+    println!("Array pair with maximum distance = {:?}",maximum_tuple);
+}
+
+fn get_largest( arr : &[i32] ) -> i32 {
+    let mut largest = 0;
+
+    for value in arr {
+        if *value > largest { largest = *value; }
+    }
+
+    largest
+}
+
+fn get_smallest( arr : &[i32] , largest_value : i32 ) -> i32 {
+    let mut smallest = largest_value;
+
+    for value in arr {
+        if *value < smallest { smallest = *value; }
+    }
+
+    smallest
+}
