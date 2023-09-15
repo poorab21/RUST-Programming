@@ -1,0 +1,27 @@
+use std::io;
+
+fn main() {
+    let mut num = String::new();
+    
+    println!("Enter Number:");
+    io::stdin().read_line(&mut num).expect("Something went wrong while processing input for number");
+    num.pop();
+    
+    let mut num = num.trim().parse().unwrap();
+    
+    for i in 2..=num {
+        if isPrime(i as i32) && num % i == 0 {
+            print!("{} ",i);
+        }
+    }
+}
+
+fn isPrime( num : i32 ) -> bool {
+    let mut i = 2;
+    
+    while i < num {
+        if num % i == 0 { return false; }
+        i += 1;
+    }
+    true
+}
