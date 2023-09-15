@@ -1,0 +1,35 @@
+use std::io;
+
+fn main() {
+    let mut v : Vec<i32> = Vec::new();
+    let mut size = String::new();
+    let mut input = String::new();
+    
+    println!("Enter Size:");
+    io::stdin().read_line(&mut size).expect("Something went wrong while processing input for size");
+    size.pop();
+    
+    let size : i32 = size.trim().parse().unwrap();
+    
+    for i in 0..size {
+        println!("Enter Element:");
+        io::stdin().read_line(&mut input).expect(format!("Something went wrong while processing input for index {} of array",i).as_str());
+        input.pop();
+        
+        v.push( input.trim().parse().unwrap() );
+        input.clear();
+    }
+    
+    let mut endIndex = v.len() - 1;
+    let mut startIndex = 0;
+    
+    while startIndex < endIndex {
+        if v.get(startIndex).unwrap() != v.get(endIndex).unwrap() {
+            println!("Array is not pallindromic");
+            return;
+        }
+        startIndex += 1;
+        endIndex -= 1;
+    }
+    println!("Array is pallindromic");
+}
