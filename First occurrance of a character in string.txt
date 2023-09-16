@@ -1,0 +1,21 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut character = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    println!("Enter Character:");
+    io::stdin().read_line(&mut character).expect("Something went wrong while processing input for character");
+    character.pop();
+    
+    let character : char = character.trim().chars().nth(0).unwrap();
+    
+   for (i,c) in s.chars().enumerate() {
+       if c == character { println!("{} first occurs at index {}",character,i); return; }
+   }
+   println!("{character} does not occur in '{s}'");
+}
