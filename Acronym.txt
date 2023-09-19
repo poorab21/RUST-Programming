@@ -1,0 +1,24 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+
+    for word in s.split(" ") {
+        for w in word.split("-") {
+            let c = w.chars().nth(0).unwrap();
+
+            if is_alphabet(c) {
+                print!("{}",c.to_ascii_uppercase());
+            }
+        }
+    }
+}
+
+fn is_alphabet( character : char ) -> bool {
+    if character >= 'a' && character <= 'z' || character >= 'A' && character <= 'Z' { return true; }
+    false
+}

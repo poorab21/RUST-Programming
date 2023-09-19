@@ -1,0 +1,25 @@
+use std::io;
+
+fn main() {
+    let mut number = String::new();
+    let mut base = String::new();
+    let mut power = 0;
+    let mut num = 0;
+
+    println!("Enter Number:");
+    io::stdin().read_line(&mut number).expect("Something went wrong while processing input for number");
+    number.pop();
+
+    println!("Enter Base:");
+    io::stdin().read_line(&mut base).expect("Something went wrong while processing input for base");
+    base.pop();
+
+    let base : i32 = base.trim().parse().unwrap();
+
+    for digit in number.trim().chars().rev() {
+        num = num + ( (digit as i32) - ('0' as i32) ) * ( base.pow(power) );
+        power += 1;
+    }
+
+    println!("{num}");
+}
