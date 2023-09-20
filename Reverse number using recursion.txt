@@ -1,0 +1,23 @@
+use std::io;
+
+fn reverse_number( num : i32 ) -> ( i32 , i32 ) {
+    if num / 10 <= 0 {
+        return ( 1 , num % 10 );
+    }
+    
+    ( reverse_number( num / 10 ).0 * 10 ,( ( num % 10 ) * (reverse_number( num / 10 ).0 * 10 )) + reverse_number( num / 10 ).1)
+}
+
+fn main() {
+    let mut number = String::new();
+    
+    println!("Enter Number:");
+    io::stdin().read_line(&mut number).expect("Something went wrong while processing input for number");
+    number.pop();
+    
+    let number = number.trim().parse::<i32>().unwrap();
+    
+    let reversed = reverse_number(number).1;
+    println!("{}",reversed);
+
+}
