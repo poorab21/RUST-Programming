@@ -1,0 +1,21 @@
+use std::io;
+
+fn strlen( s : &str , index : usize ) -> i32 {
+    if s.chars().nth(index).unwrap() == '\0' {
+        return 0;
+    } 
+    1 + strlen( s , index + 1 )
+}
+
+fn main() {
+    let mut s = String::new();
+    
+    println!("Enter String:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for string");
+    s.pop();
+    
+    s.push('\0');
+    let s_len = strlen( &s , 0 );
+    
+    println!("String length = {}",s_len);
+}
