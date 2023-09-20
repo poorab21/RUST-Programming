@@ -1,0 +1,28 @@
+use std::io;
+
+fn conv_to_decimal( binary : &str , index : usize ) -> i32 {
+    let num = binary.chars().nth(index).unwrap();
+    
+    if num == '1' && index == 0 {
+        return (2 as i32).pow( (binary.len() - index - 1) as u32 );
+    }
+    else if num == '0' && index == 0 {
+        return 0;
+    }
+    else if num == '0' {
+        return 0 + conv_to_decimal( binary , index - 1 );
+    }
+    
+    (2 as i32).pow( (binary.len() - index - 1) as u32 ) + conv_to_decimal( binary , index - 1 )
+}
+
+fn main() {
+    let mut number = String::new();
+    
+    println!("Enter Number:");
+    io::stdin().read_line(&mut number).expect("Something went wrong while processing input for number");
+    number.pop();
+    
+    let decimal = conv_to_decimal(&number,number.len()-1);
+    println!("Number in decimal form = {}",decimal);
+}
