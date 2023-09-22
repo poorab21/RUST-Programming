@@ -1,0 +1,45 @@
+use std::io;
+
+fn main() {
+    let mut wheels = String::new();
+    let mut car_bodies = String::new();
+    let mut figures = String::new();
+    
+    println!("Enter number of wheels:");
+    io::stdin().read_line(&mut wheels).expect("Something went wrong while processing input for number of wheels");
+    wheels.pop();
+    
+    println!("Enter number of car bodies :");
+    io::stdin().read_line(&mut car_bodies).expect("Something went wrong while processing input for number of car bodies");
+    car_bodies.pop();
+    
+    println!("Enter number of figures:");
+    io::stdin().read_line(&mut figures).expect("Something went wrong while processing input for number of figures");
+    figures.pop();
+    
+    let wheels : u32 = wheels.trim().parse().unwrap();
+    let car_bodies : u32 = car_bodies.trim().parse().unwrap();
+    let figures : u32 = figures.trim().parse().unwrap();
+    
+    let mut i = 0;    
+    let mut j = 0;
+    let mut k = 0;
+    
+    while ( i * 4 ) <= wheels && ( j * 1 ) <= car_bodies && ( k * 2 ) <= figures {
+        i += 1;
+        j += 1;
+        k += 1;
+    }
+    
+    i -= 1;
+    j -= 1;
+    k -= 1;
+    
+    println!("{0} cars can be made",smallest(i,j,k));
+}
+
+fn smallest( n1 : u32 , n2 : u32 , n3 : u32 ) -> u32 {
+    if n1 < n2 && n2 < n3 { return n1; }
+    if  n2 < n1 && n2 < n3 { return n2; }
+    n3
+}
