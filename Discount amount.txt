@@ -1,0 +1,20 @@
+use std::io;
+
+fn main() {
+    let mut amount = String::new();
+    let mut discount = String::new();
+    
+    println!("Enter Amount:");
+    io::stdin().read_line(&mut amount).expect("Something went wrong while processing input for amount");
+    amount.pop();
+    
+    println!("Enter Discount Percent:");
+    io::stdin().read_line(&mut discount).expect("Something went wrong while processing input for discount percent");
+    discount.pop();
+    
+    let amount : f32 = amount.trim().parse().unwrap();
+    let discount: f32 = discount.trim().parse().unwrap();
+    
+    println!("amount after discount = {:.2}",(amount - ((discount/100.0_f32) * amount)));
+    
+}
