@@ -1,0 +1,59 @@
+enum Direction {
+    LEFT ,
+    RIGHT
+}
+
+fn main() {
+    let arr = [ 
+        Direction::LEFT ,  
+        Direction::LEFT ,
+        Direction::LEFT ,
+        Direction::LEFT ,
+        Direction::LEFT ,  
+        Direction::LEFT ,
+        Direction::LEFT ,
+        Direction::LEFT ,
+        Direction::LEFT ,  
+        Direction::LEFT ,
+        Direction::RIGHT ,
+        Direction::RIGHT ,   
+        Direction::RIGHT ,
+        Direction::RIGHT , 
+        ];
+    let mut left = 0;
+    let mut right = 0;
+    
+    for i in arr.iter() {
+        if is_left(i) { left += 1; continue; }
+        if is_right(i) { right += 1; continue; }
+    }
+    
+    if left == right { println!("0"); return; }
+    if left > right { println!("{}",rotations(left-right)); return; }
+    if right > left { println!("{}",rotations(right-left)); return; }
+}
+
+fn is_left( val : &Direction ) -> bool {
+    if let Direction::LEFT = *val {
+        return true;
+    }
+    false
+}
+
+fn is_right( val : &Direction ) -> bool {
+    if let Direction::RIGHT = *val {
+        return true;
+    }
+    false
+}
+
+fn rotations( num : i32 ) -> i32 {
+    let mut i = 0;
+    
+    while i * 4 <= num {
+        i += 1;
+    }
+    
+    i - 1
+    
+}
