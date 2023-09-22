@@ -1,0 +1,17 @@
+fn main() {
+    let arr : &mut [ i32 ] = &mut [ 1 , 1 , 1 ];
+    let n = 5;
+    
+    for i in 0..n {
+        for num in arr.iter_mut() {
+            if *num % 2 == 0 {
+                *num -= 2;
+            }
+            else {
+                *num += 2;
+            }
+        }
+    }
+    
+    println!("{:#?}",arr);
+}
