@@ -1,0 +1,91 @@
+#[derive(Debug)]
+struct Node<T : Clone + std::fmt::Debug + std::fmt::Display> {
+    data : T ,
+    next : Option<Box<Node<T>>>
+}
+
+#[derive(Debug)]
+
+struct Linked_list<T : Clone + std::fmt::Debug + std::fmt::Display> {
+    head: Option<Box<Node<T>>>
+}
+
+impl<T: Clone + std::fmt::Debug + std::fmt::Display> Linked_list<T> {
+    fn new() -> Self {
+        Self {
+            head: None
+        }
+    }
+    
+    fn insert( &mut self , val : T ) {
+        if let None = self.head {
+            self.head = Some( Box::new(
+                Node {
+                    data : val ,
+                    next : None
+                }
+            ) )
+        }
+        else {
+            let mut current = &mut self.head;
+            while let Some(node) = current {
+                if let None = node.next {
+                    node.next = Some (
+                        Box::new(
+                            Node {
+                                data : val ,
+                                next : None
+                            }
+                        )
+                    );
+                    break;
+                }
+                current = &mut node.next;
+            }
+        }
+    }
+    
+    fn display(&self) {
+        let mut current = &self.head;
+        while let Some(node) = current {
+            print!("{} ",&node.data);
+            current = &node.next;
+        }
+        println!("");
+    }
+    
+    fn pop( &mut self ) -> Option<T> {
+        if let None = &self.head {
+            return None;
+        }
+        else {
+           let mut current = &mut self.head;
+           let mut value : Option<Box<Node<T>>> = None;
+           loop {
+                if let None = current.as_mut().unwrap().next {
+                   value = std::mem::replace(current,None);
+                   break;
+                }
+                current = &mut current.as_mut().unwrap().next;
+            }
+            return Some(value.unwrap().data);
+        }
+    }
+}
+
+fn main() {
+    let mut l1 = Linked_list::new();
+    l1.insert(5);
+    l1.insert(9);
+    l1.insert(10);
+    l1.display();
+    println!("value removed = {}",l1.pop().unwrap());
+    println!("value removed = {}",l1.pop().unwrap());
+    l1.insert(88);
+    l1.insert(90);
+    println!("value removed = {}",l1.pop().unwrap());
+    l1.display();
+    println!("value removed = {}",l1.pop().unwrap());
+    l1.display();
+    
+}

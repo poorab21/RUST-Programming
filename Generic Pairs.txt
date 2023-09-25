@@ -1,0 +1,29 @@
+#[derive(Debug)]
+
+struct Pair<A: std::fmt::Debug,B: std::fmt::Debug> {
+    x : A , 
+    y : B
+}
+
+impl<A: std::fmt::Debug , B: std::fmt::Debug> Pair<A,B> {
+    fn new(x : A , y : B) -> Self {
+        Self {
+            x,
+            y
+        }
+    }
+    fn change_to( &mut self , x : A , y : B ) {
+        self.x = x ;
+        self.y = y;
+    }
+    
+    fn display(&self) {
+        println!("{:?}",self);
+    }
+}
+
+fn main() {
+    let mut p1 = Pair::new(2,'c');
+    //p1.change_to(3,'a');
+    p1.display();
+}

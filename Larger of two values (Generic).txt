@@ -1,0 +1,16 @@
+use std::any::type_name;
+
+fn find_max<T : std::cmp::PartialOrd>( a : T , b : T ) -> T {	
+	
+	if a > b {
+	    a  
+	}
+	else { b }
+}
+
+fn main() {
+   println!("{}",find_max(15,15));
+   println!("{}",find_max(25.5,15.5));
+   println!("{}",find_max('e'.to_ascii_lowercase(),'d'.to_ascii_lowercase()));
+   println!("{}",find_max("hello","babble"));
+}

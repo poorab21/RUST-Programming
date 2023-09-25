@@ -1,0 +1,46 @@
+#[derive(Debug)]
+
+struct Stack<T> {
+    data : Vec<T>
+}
+
+impl<T : std::fmt::Debug> Stack<T> {
+    fn new() -> Self {
+	Stack {
+	   data : vec![]
+	}
+    }
+
+    fn push( &mut self , val : T ) {
+	self.data.push(val);
+    }
+
+    fn pop( &mut self ) -> T {
+	self.data.pop().unwrap()
+    }
+    
+    fn empty( &self ) -> bool {
+	if self.data.len() == 0 { true }
+	else { false }
+    }
+    fn display(&self) {
+	println!("{:?}",self.data);
+    }
+}
+
+fn main() {
+    let mut stack1 : Stack<i32> = Stack::new();
+    stack1.push(1);
+    stack1.push(5);
+    stack1.push(6);
+    stack1.pop();
+    println!("{}",stack1.empty());
+    stack1.pop();
+    stack1.pop();
+
+    println!("{}",stack1.empty());
+    stack1.push(55);
+    stack1.push(60);
+    stack1.display();
+
+}

@@ -1,0 +1,47 @@
+fn sort<T : std::cmp::PartialOrd + Clone>( slice : &mut [T] ) {
+    let mut sub : Option<T> = None;
+    let mut temp : Option<T> = None;
+    
+    for i in 0..slice.len() {
+        for j in i..slice.len() {
+            if slice[i] > slice[j] {
+                sub = Some(slice[i].clone());
+                temp = Some(slice[j].clone());
+                std::mem::replace( &mut slice[i] , temp.unwrap() );
+                std::mem::replace( &mut slice[j] , sub.unwrap() );
+            }
+        }
+    }
+}
+
+fn merge<T : std::cmp::PartialOrd + Clone>( slice1 : &mut [T] , slice2 : &mut [T] ) -> Vec<T> {
+    let mut v : Vec<T> = Vec::with_capacity( slice1.len() + slice2.len() );
+    
+    let mut i = 0;
+    let mut j = 0;
+    
+    sort(slice1);
+    sort(slice2);
+    
+    while i < slice1.len() && j < slice2.len() {
+        if slice1[i] < slice2[j] {
+            v.push( slice1[i].clone() );
+            i += 1;
+        }
+        else {
+            v.push( slice2[j].clone() );
+            j += 1;
+        }
+    }
+    
+    v.extend_from_slice( &slice1[i..] );
+    v.extend_from_slice( &slice2[j..] );
+    
+    v
+    
+}
+
+fn main() {
+    let sorted_array = merge( &mut [7,3,5,1] , &mut [1,21,13,4] );
+    println!("{:?}",sorted_array);
+}
