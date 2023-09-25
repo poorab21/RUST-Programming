@@ -1,0 +1,24 @@
+fn duplicates<T : Eq + Clone + std::cmp::PartialOrd>( slice : &[T] ) -> Vec<T> {
+    let mut duplicate_vals : Vec<T> = Vec::new();
+    
+    for i in 0..slice.len() {
+        if already_exists( slice , i ) && !duplicate_vals.contains(&slice[i]) {
+            duplicate_vals.push(slice[i].clone());
+        }
+    }
+    duplicate_vals
+}
+
+fn already_exists<T: std::cmp::PartialOrd>( slice : &[T] , index : usize ) -> bool {
+    for i in 0..index {
+        if slice[i] == slice[index] {
+            return true;
+        }
+    }
+    false
+}
+
+fn main() {
+    let v1 = duplicates( &[ 1 , 2 , 4 , 4 ,2 , 2, 5 , 5, 1] );
+    println!("{:?}",v1);
+}

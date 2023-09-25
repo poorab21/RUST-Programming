@@ -1,0 +1,25 @@
+use std::default::Default;
+use std::any::type_name;
+
+fn type_of<T>( _ : T ) -> &'static str {
+    &type_name::<T>()[1..]
+}
+
+fn find_max<T: std::cmp::PartialOrd + std::default::Default + Clone>( slice : &[T] ) -> T {
+    let mut maximum : T = Default::default();
+    
+    for i in 0..slice.len() {
+        if maximum < slice[i] {
+            maximum = slice[i].clone();
+        }
+    }
+    
+    maximum
+}
+
+fn main() {
+    println!("{}",find_max(&[9,2,3,47]));
+    println!("{}",find_max(&['c','d','a','z']));
+    println!("{}",find_max(&[5.3,98.7,57.74,647.1,177.7]));
+    println!("{}",find_max(&["hello" , "zagra" , "bagheera" , "Genghis" ]));
+}

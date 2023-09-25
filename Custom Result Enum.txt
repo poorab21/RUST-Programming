@@ -1,0 +1,38 @@
+#[derive(Debug)]
+enum Result<T : Clone> {
+    ok(T) ,
+    Error(String)
+}
+
+impl<T: Clone> Result<T> {
+   fn and_then<U>( &self , closure : U ) -> Result<T> where U : Fn(T) -> Result<T> {
+        match self {
+            Result::ok(val) => closure(val.clone()) ,
+            Result::Error(x) => Result::Error(x.clone()) 
+        }
+   }
+   
+   fn unwrap( &self ) -> T {
+       match self {
+           Result::ok(val) => val.clone() ,
+           Result::Error(_) => panic!("error occurred")
+       }
+   }
+}
+
+fn main() {
+    let closure = |x| {
+        println!("closure executed");
+        Result::ok(x)
+    };
+    
+    let mut result1 = Result::ok(5);
+    let mut result2 = Result::Error("error occurred".to_string());
+    
+    println!("{:?}",result1.and_then(closure));
+    println!("{:?}",result2.and_then(closure));
+    
+    println!("{}",result1.unwrap());
+    println!("{:?}",result1.and_then(closure));
+    //result2.unwrap();
+}

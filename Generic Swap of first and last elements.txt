@@ -1,0 +1,13 @@
+fn swap_elements<T: Clone>( slice : &mut [T] ) {
+   let last_index = slice.len() - 1;
+   let last_index_val = slice[last_index].clone();
+   let first_index_val = std::mem::replace( &mut slice[0] , last_index_val );
+   std::mem::replace( &mut slice[last_index] , first_index_val );
+}
+
+fn main() {
+    let mut arr = [ 7 , 5 , 3 , 4 , 6 ];
+    println!("{:?}",arr);
+    swap_elements( &mut arr );
+    println!("{:?}",arr);
+}
