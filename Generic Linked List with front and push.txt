@@ -1,0 +1,78 @@
+#[derive(Debug)]
+
+struct Node<T: std::fmt::Debug + Clone> {
+   data : T , 
+   next : Option<Box<Node<T>>>
+}
+
+struct Linked_list<T: std::fmt::Debug + Clone> {
+   head : Option<Box<Node<T>>>
+}
+
+impl<T: std::fmt::Debug + Clone> Linked_list<T> {
+   fn new() -> Self {
+       Self {
+	  head : None
+       }
+   }
+   
+   fn push( &mut self , data : T ){
+	if let None = self.head { 
+	    self.head = Some( Box::new( Node { data , next : None } ) );
+	} 
+	else {
+	    let mut current = &mut self.head;
+	    
+	    while let Some(node) = current {
+		if let None = node.next { node.next = Some( Box::new( Node { data , next : None } ) ) ; break; }
+		current = &mut node.next; 
+	    }
+	}
+   }
+   
+   fn display( &self ) {
+   	let mut current = &self.head;
+	
+	while let Some(node) = current {
+	    print!("{:?} ",node.data);
+	    current = &node.next;
+	}
+	println!("");
+   }
+   
+   fn front( &mut self , data : T ) {
+	if let None = self.head {
+	   self.head = Some( Box::new( Node { data , next : None } ) );
+	   return;
+	}
+	
+	let node = Some( Box::new( Node { data , next : self.head.take() } ) );
+	self.head = node;
+   }
+   
+   fn pop( &mut self ) -> Option<T> {
+       if let None = self.head {
+           None
+       }
+       else {
+           let mut current = &mut self.head;
+           let mut val : Option<Box<Node<T>>> = None;
+           
+           loop {
+               if let None = current.as_mut().unwrap().next {
+                    break;
+               }
+               current = &mut current.as_mut().unwrap().next;
+           }
+           val = current.take();
+           Some(val.unwrap().data)
+       }
+   }
+}
+
+fn main(){
+   let mut l1 = Linked_list::new();
+   l1.push(72.3);
+   l1.push(99.9);
+   l1.display();
+}
