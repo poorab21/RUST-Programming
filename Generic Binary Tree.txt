@@ -1,0 +1,114 @@
+struct Binary_Tree<T> where T: std::cmp::PartialOrd + std::fmt::Display {
+    head : Option<Box<Node<T>>>
+}
+
+struct Node<T> where T: std::cmp::PartialOrd + std::fmt::Display {
+    data : T ,
+    left : Option<Box<Node<T>>> ,
+    right : Option<Box<Node<T>>> 
+}
+
+impl<T> Binary_Tree<T> where T: PartialOrd + std::fmt::Display {
+    fn new() -> Self {
+        Self {
+            head : None
+        }
+    }
+    
+    fn insert( &mut self , data : T ) {
+        if let None = self.head {
+            self.head = Some( Box::new( Node {
+                data ,
+                left : None ,
+                right : None
+            }));
+        }
+        else {
+            let mut nodes : Vec<&mut Node<T>> = Vec::new();
+            
+            nodes.push(self.head.as_mut().unwrap());
+            
+            loop {
+                let node = nodes.pop().unwrap();
+                
+                if let None = node.left {
+                    node.left = Some( Box::new( Node {
+                        data ,
+                        left : None ,
+                        right : None
+                    }));
+                    break;
+                }
+                else if let None = node.right {
+                    node.right = Some( Box::new( Node {
+                        data ,
+                        left : None ,
+                        right : None
+                    }));
+                    break;
+                }
+                else {
+                    nodes.push( node.left.as_mut().unwrap().as_mut() );
+                    nodes.push( node.right.as_mut().unwrap().as_mut() )
+                }
+            }
+        }
+    }
+    
+    fn contains( &self , val : T ) -> bool {
+        if let None = self.head {
+            false
+        }
+        else {
+            let mut nodes : Vec< &Node<T> > = Vec::new();
+            nodes.push( self.head.as_ref().unwrap() );
+            
+            while nodes.len() > 0 {
+                let node = nodes.pop().unwrap();
+                
+                if node.data == val { return true; }
+                
+                if let Some(_) = &node.left {
+                    nodes.push( node.left.as_ref().unwrap() );
+                }
+                
+                if let Some(_) = &node.right {
+                    nodes.push( node.right.as_ref().unwrap() );
+                }
+            }
+            
+            false
+        }
+    }
+    
+    fn display( root : &Box<Node<T>> ) {
+        print!("{} ",root.data);
+        
+        if let None = root.left { return; }
+        
+        if let Some(_) = &root.left {
+            Self::display( root.left.as_ref().unwrap() );
+        }
+        
+        if let Some(_) = &root.right {
+            Self::display( root.right.as_ref().unwrap() );
+        }
+    }
+    
+    fn display_nodes( &self ) {
+        Self::display( self.head.as_ref().unwrap() );
+        println!("");
+    }
+}
+
+fn main() {
+   let mut bt1 = Binary_Tree::new();
+   bt1.insert('x');
+   bt1.insert('a');
+   bt1.display_nodes();
+   bt1.insert('f');
+   bt1.insert('k');
+   bt1.insert('i');
+   bt1.display_nodes();
+   println!("{}",bt1.contains('i'));
+}
