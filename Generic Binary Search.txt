@@ -1,0 +1,30 @@
+use std::default::Default;
+
+fn binary_search<T: std::cmp::PartialOrd>( arr : &[T] , value : T ) -> Option<usize> {
+    
+    let mut right = arr.len();
+    let mut left = 0usize;
+    
+    while left != right {
+        let x = (left + right) / 2 ;
+        
+        if left == right - 1 && arr[x] != value {
+            break;
+        }
+        else if value < arr[x] {
+             right = x;
+        }
+        else if value > arr[x] {
+            left = x;
+        }
+        else if value == arr[x] {
+            return Some(x);
+        }
+    }
+    None
+}
+
+fn main() {
+    let result = binary_search( &[ "aegis" , "hello" , "zendaya" ] , "aeon" );
+    println!("{:?}",result);
+}
