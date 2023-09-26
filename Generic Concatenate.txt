@@ -1,0 +1,12 @@
+fn concatenate<T: Clone>( slice : &[T] , slice2 : &[T] ) -> Vec<T> {
+    let mut v : Vec<T> = Vec::new();
+    
+    for i in 0..slice.len() { v.push(slice[i].clone()); }
+    for i in 0..slice2.len() { v.push(slice2[i].clone()); }
+    v
+}
+
+fn main() {
+    let concatenated_result = concatenate(&[ 8.7 ],&[ 19.2 ,87.9 ]);
+    println!("{:?}",concatenated_result);
+}

@@ -1,0 +1,19 @@
+fn max_by<T: Clone + std::cmp::PartialOrd,U>( slice : &[T] , closure : U ) -> T where U : Fn(T,T) -> T {
+    let mut maximum = slice[0].clone();
+    
+    for i in 1..slice.len() {
+        maximum = closure( maximum , slice[i].clone() );
+    }
+    maximum
+}
+
+fn main() {
+    let closure = |x , y| {
+        if x > y { x }
+        else { y }
+    };
+    
+    let arr = [ 411 , 221 , 163, 87 ];
+    println!("{}",max_by(&arr,closure));
+    
+}
