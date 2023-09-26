@@ -1,0 +1,34 @@
+fn sort<T: num::traits::Num + std::ops::AddAssign + std::ops::SubAssign + Copy + std::cmp::PartialOrd>( arr : &mut [T] ) {
+    for i in 0..arr.len() {
+        for j in i..arr.len() {
+            if arr[i] > arr[j] {
+                arr[i] += arr[j];
+                arr[j] = arr[i] - arr[j];
+                arr[i] -= arr[j];
+            }
+        }
+    }
+}
+
+fn get_median<T: num::traits::Num + std::ops::SubAssign + std::ops::AddAssign + std::ops::DivAssign + Copy + std::cmp::PartialOrd + Into<f64>>(arr : &mut[T]) -> f64 {
+    sort(arr);
+    
+    let length = arr.len();
+    
+    if length % 2 == 0 {
+        let x : f64 = arr[ (length / (2 as usize)) - 1 ].into();
+        let y : f64 = arr[ (length / (2 as usize)) ].into();
+        
+        ( x + y ) / 2.0
+    }
+    else {
+        arr[ length / (2 as usize) ].into()
+    }
+}
+
+fn main() {
+    let mut arr = [ 1,  34 , 12 , 75 , 56 , 70 , 66 , 86 , 60 , 14 ];
+    
+    let median = get_median(&mut arr);
+    println!("{}",median);
+}
