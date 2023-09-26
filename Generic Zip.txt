@@ -1,0 +1,18 @@
+fn zip<T,U>( slice1 : &[T] , slice2 : &[U] ) -> Vec<(T,U)> where T: Clone , U: Clone {
+    if slice1.len() != slice2.len() {
+        panic!("Slices must be of equal length");
+    }
+    else {
+        let mut zipped_result : Vec<(T,U)> = Vec::new();
+        
+        for i in 0..slice1.len() {
+            zipped_result.push(( slice1[i].clone() , slice2[i].clone() ));
+        }
+        zipped_result
+    }
+}
+
+fn main() {
+    let zipped_result = zip( &['a','g','u'] , &['o','t','q'] );
+    println!("{:?}",zipped_result);
+}
