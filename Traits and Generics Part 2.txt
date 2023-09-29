@@ -1,0 +1,92 @@
+// Comparator Trait with Person Type
+
+trait Comparator {
+    fn compare( self : &Self , other : &Self ) -> bool;
+}
+
+#[derive(Debug)]
+
+struct Person<T,E: std::cmp::PartialOrd + num::Num + Copy> {
+    name : T ,
+    age : E
+}
+
+impl<T,E: std::cmp::PartialOrd + num::Num + Copy> Person<T,E> {
+    fn new( name : T , age : E ) -> Self {
+        Self {
+            name , 
+            age
+        }
+    }
+    
+    fn name( &self ) -> &T {
+        &self.name
+    }
+    
+    fn age( &self ) -> E {
+        self.age
+    }
+    
+    fn set_name( &mut self , name : T ) {
+        self.name = name;
+    }
+    
+    fn set_age( &mut self , age : E ) {
+        self.age = age;
+    }
+}
+
+impl<T,E: std::cmp::PartialOrd + num::Num + Copy> Comparator for Person<T,E> {
+    fn compare( &self , other : &Self ) -> bool {
+        self.age == other.age 
+    }
+}
+
+fn main() {
+    let person1 = Person::new( "Poorab Gangwani".to_string() , 16 );
+    let mut person2 = Person::new( "Antonio Andolini".to_string() , 15 );
+    person2.set_name( "Bret Hart".to_string() );
+    person2.set_age( 16 );
+    
+    println!("{:#?}",person2);
+    
+    println!("{}",person1.compare( &person2 ));
+}
+______________________________________________________________________________________________________________________________________________________________________________________
+// find max value of a generic slice
+
+use std::any::type_name;
+
+fn type_of<T>( _ : T ) -> &'static str {
+    &type_name::<T>()[0..]
+}
+
+fn find_max<T: Clone + std::cmp::PartialOrd + std::fmt::Display>( slice: &[T] ) -> &T {
+    let val_type = type_of(slice[0].clone());
+    let mut index = 0;
+    
+    if val_type.contains("String") || val_type.contains("str") {
+        let mut maximum  = 0usize;
+        for i in 0..slice.len() {
+            if slice[i].to_string().len() > maximum {
+                maximum = slice[i].to_string().len();
+                index = i;
+            }
+        }
+    }
+    else {
+        let mut maximum = slice[0].clone();
+        for i in 1..slice.len() {
+            if slice[i].clone() > maximum {
+                maximum = slice[i].clone();
+                index = i;
+            }
+        }
+    }
+    
+    &slice[index]
+}
+
+fn main() {
+    println!("{}",find_max(&["wonder","the batman","Dark"]));
+}
