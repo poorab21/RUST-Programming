@@ -1,0 +1,268 @@
+// words with their indices in a vector 
+
+use std::collections::HashMap;
+
+fn occurrance_count( vec : &Vec<String> ) -> HashMap<String,usize> {
+    let mut hashmap : HashMap<String,usize> = HashMap::new();
+    
+    for word in vec {
+        hashmap.insert( word.clone() , word.len() );
+    }
+    
+    hashmap
+}
+
+fn main() {
+    let hashmap1 = occurrance_count( &vec![
+        String::from("Jimmy Neutron") ,
+        String::from("Carl Wheezer") ,
+        String::from("Diane Keaton") ,
+        String::from("Poorab") ,
+        String::from("Krusty") ,
+        String::from("father")
+    ] );
+    
+    println!("{:#?}",hashmap1);
+}
+____________________________________________________________________________________________________________________________________________________________________________________
+// Swap Generic Key Value pairs
+
+use std::collections::HashMap;
+use std::hash::Hash;
+
+fn swap_key_values<T: Clone,E: Clone + Hash + Eq>( hashmap : &HashMap<T,E> ) -> HashMap<E,T> {
+    let mut new_hashmap : HashMap<E,T> = HashMap::new();
+    
+    for ( key , value ) in hashmap {
+        new_hashmap.insert( value.clone() , key.clone() );
+    }
+    
+    new_hashmap
+}
+
+fn main() {
+    let hashmap = HashMap::from(
+        [ 
+        ( true , 9u64 ) ,
+        ( false , 19u64 ) ,
+    ]);
+    let swapped_hashmap = swap_key_values( &hashmap );
+    
+    println!("{:#?}",swapped_hashmap);
+}
+____________________________________________________________________________________________________________________________________________________________________________________
+// Key with largest value
+
+use std::collections::HashMap;
+
+fn largest_value( hashmap : &HashMap<String,i32> ) -> &str {
+    let mut maximum = 0;
+    let mut k = "";
+    
+    for ( key , &value ) in hashmap {
+        if maximum < value {
+            maximum = value;
+            k = &key;
+        }
+    }
+    
+    k
+}
+
+fn main() {
+    let hashmap = HashMap::from(
+        [
+            ( "hello".to_string() , 57i32 ) ,
+            ( "anderson".to_string() , 188i32 ) ,
+            ( "yolo".to_string() , 22i32 ) ,
+            ( "7".to_string() , 762i32 )
+        ]
+    );
+    
+    println!("{}",largest_value(&hashmap));
+}
+________________________________________________________________________________________________________________________________________________________________________________________
+// Average of Values in each key-value pair
+
+use std::collections::HashMap;
+
+fn average( hashmap : &mut HashMap<String,Vec<u32>> ) -> HashMap<String,f32> {
+    let mut hashmap1 : HashMap<String,f32> = HashMap::new();
+    
+    for ( key , value ) in hashmap {
+        hashmap1.insert(key.clone(),value.iter().sum::<u32>() as f32 / value.len() as f32);
+    }
+    
+    hashmap1
+}
+
+fn main() {
+    let mut hashmap1 = HashMap::from(
+    [ 
+        ( "hello".to_string() , vec![ 2 , 2 , 9 ,6 ,19 ] ) ,
+        ( "howdy".to_string() , vec![ 12 , 12 , 19 ,16 ,19 ] ) ,
+        ( "software".to_string() , vec![ 7 , 18 , 14 , 29 ] )
+    ]);
+    
+    let average_hashmap = average( &mut hashmap1 );
+    println!("{:#?}",average_hashmap);
+}
+_________________________________________________________________________________________________________________________________________________________________________________________
+// Index Occurrences of words in a vector
+
+use std::collections::HashMap;
+
+fn index_occurrences<'a>( vec : &Vec<&'a str> ) -> HashMap<&'a str,Vec<usize>> {
+    let mut hashmap : HashMap<&str,Vec<usize>> = HashMap::new();
+    
+    for (index,word) in vec.iter().enumerate() {
+        hashmap.entry(word).or_insert(vec![]).push( index );
+    }
+    
+    hashmap
+}
+fn main() {
+    println!("{:?}",index_occurrences( 
+        &vec![
+        "howdy" ,
+        "hello" , 
+        "there" , 
+        "howdy" ,
+        "there" ,
+        "hello" ,
+        "there" ,
+        "Jimmy Neutron"
+        ] )
+    );
+}
+_________________________________________________________________________________________________________________________________________________________________________________________
+// new key-value pairs with only primes numbers from values of previous key-value pairs 
+
+use std::collections::HashMap;
+
+fn primes( vec : &Vec<i32> ) -> Vec<i32> {
+    let mut vec1 : Vec<i32> = Vec::new();
+    
+    'outerloop: for num in vec {
+        if *num < 2 { continue; }
+        for i in 2..*num {
+            if num % i == 0 { continue 'outerloop; } 
+        }
+        vec1.push(num.clone());
+    }
+    vec1
+}
+
+fn only_prime<'a>( hashmap : &HashMap<&'a str,Vec<i32>> ) -> HashMap<&'a str,Vec<i32>> {
+    let mut hashmap2 : HashMap<&str,Vec<i32>> = HashMap::new();
+    
+    for (index,value) in hashmap {
+        hashmap2.insert( index , primes(value) );
+    }
+    hashmap2
+}
+
+fn main() {
+    let hashmap = HashMap::from(
+        [
+            ( "hello" , vec![ 1 , 2 , 3 , 4 , 5 ] ) , 
+            ( "there" , vec![ 7 , 82 , 17 , 45 , 65 ] ) ,
+            ( "howdy" , vec![ 8 , 19 , 74 , 64 , 109 , 11]) ,
+            ( "stone" , vec![ 67 , 23 , 13 , 11 ]) ,
+            ( "rowdy" , vec![ 1 , 0 , 5] )
+        ]
+    );
+    
+    println!("{:#?}",only_prime(&hashmap));
+}
+________________________________________________________________________________________________________________________________________________________________________________________
+// new key value pairs with the collection in values in descending alphabetical order
+
+use std::collections::HashMap;
+
+fn sort_in_reverse<'a>( mut vec : Vec<&'a str> ) -> Vec<&'a str> {
+    let mut temp = "";
+    
+    for i in 0..vec.len() {
+        for j in i..vec.len() {
+            if vec.get(i).unwrap().to_ascii_lowercase() < vec.get(j).unwrap().to_ascii_lowercase() {
+                temp = vec.get(i).unwrap().clone();
+                vec[i] = vec[j].clone();
+                vec[j] = temp;
+                
+            }
+        }
+    }
+    vec
+}
+
+fn reverse_alphabetical_order<'a>( hashmap : &HashMap< String , Vec<&'a str> > ) -> HashMap< String , Vec<&'a str> > {
+    let mut hashmap1 : HashMap< String , Vec<&str> > = HashMap::new();
+    
+    for ( index , value ) in hashmap {
+        hashmap1.insert( index.clone() , sort_in_reverse(value.clone()) );
+    }
+    hashmap1
+}
+fn main() {
+    let mut hashmap = HashMap::from(
+        [
+            ( "marvel".to_string() , vec![ "spider-man" , "iron man" , "captain america" , "hawkeye" , "hulk"] ) ,
+            ( "DC".to_string() , vec![ "batman" , "superman" , "wonder woman" , "green lantern" , "flash"] ) ,
+            ( "Anime".to_string() , vec![ "naruto" , "nakamoto" , "neji" ] ) ,
+            ( "TAAHM".to_string() , vec![ "Charlie" , "alan" , "jake" , "Berta"] )
+        ]
+    );
+    
+    let new_hashmap = reverse_alphabetical_order( &hashmap );
+    println!("{:#?}",new_hashmap);
+}
+_________________________________________________________________________________________________________________________________________________________________________________________
+// key value pairs with n first numbers from the fibonacci sequence
+
+use std::collections::HashMap;
+
+fn fibonnaci_sequence( nth : usize ) -> Vec<i32> {
+    let mut vec : Vec<i32> = Vec::new();
+    
+    if nth == 1 { vec.push(0); } 
+    else if nth == 2 { vec.push(1); }
+    else {
+        let mut i : usize = 2;
+        vec.push(0);
+        vec.push(1);
+        
+        while i < nth {
+            let num = vec[i-1] + vec[i-2];
+            vec.push(num);
+            i += 1;
+        }
+    }
+    vec
+}
+
+fn fibonnaci( hashmap : &HashMap<String,i32> ) -> HashMap<String,Vec<i32>> {
+    let mut hashmap1 : HashMap<String,Vec<i32>> = HashMap::new();
+    
+    for ( index , &value ) in hashmap {
+        hashmap1.insert( index.clone() , fibonnaci_sequence( value as usize ) );
+    }
+    
+    hashmap1
+}
+
+fn main() {
+    let hashmap = HashMap::from(
+        [
+            ( "10th".to_string() , 10 ) ,
+            ( "1th".to_string() , 1 ) ,
+            ( "2th".to_string() , 2 ) ,
+            ( "7th".to_string() , 7 ) ,
+            ( "5th".to_string() , 5 ) ,
+            ( "10th".to_string() , 10) ,
+            ( "16th".to_string() , 16 )
+        ]
+    );
+    
+    println!("{:#?}",fibonnaci(&hashmap));
+} 
