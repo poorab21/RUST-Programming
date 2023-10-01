@@ -1,0 +1,110 @@
+use std::collections::HashMap;
+
+pub trait Cache<T: Clone> {
+    fn get( &mut self , index  : &'static str ) -> Option<&T>;
+    fn set( &mut self , index  : &'static str , value : T );
+}
+
+struct HashCache<T: Clone> {
+    cache : HashMap< &'static str , T>
+}
+
+struct LRU_cache<T: Clone> {
+    cache : Vec< (&'static str , T) > ,
+    size : u8
+}
+
+impl<T: Clone> LRU_cache<T> {
+    fn new( size : u8 ) -> Self {
+        Self {
+            size, 
+            cache : Vec::new()
+        }
+    }
+    
+    fn display( &self ) -> &Vec<(&'static str,T)> {
+        &self.cache
+    }
+}
+
+impl<T: Clone> Cache<T> for LRU_cache<T> {
+    fn set( &mut self , index : &'static str , value : T ) {
+        if (self.size as usize) == self.cache.len()  {
+            let length = self.cache.len() - 1;
+            std::mem::replace( &mut self.cache[ length ] , (index,value) );
+        }
+        else {
+            self.cache.push((index,value));
+        }
+    }
+    
+    fn get( &mut self , index : &'static str ) -> Option<&T> {
+        for i in 0..self.cache.len() {
+        
+            let key = (self.cache.get(i).unwrap()).0;
+            
+            if key == index { 
+                let value = (self.cache.get(i).unwrap().1).clone();
+                
+                self.cache.insert(0, (key , value ) );
+                self.cache.remove(i+1);
+                return Some(&(self.cache.get(0).unwrap().1));
+            }
+        }
+        None
+    }
+}
+
+impl<T: Clone> HashCache<T> {
+    fn new() -> Self {
+        let cache : HashMap< &'static str , T > = HashMap::new();
+        
+        Self { cache }
+    }
+}
+
+impl<T: Clone> Cache<T> for HashCache<T> {
+    fn get( &mut self , index : &'static str ) -> Option<&T> {
+        self.cache.get( index )
+    }
+    
+    fn set( &mut self , index : &'static str , value : T ) {
+       self.cache.insert( index , value );
+    }
+}
+
+fn main() {
+    let mut hashcache1 : HashCache<i32> = HashCache::new();
+    
+    hashcache1.set("one",1);
+    hashcache1.set("two",2);
+    
+    println!("{:?}",hashcache1.get("one").unwrap());
+    println!("{:?}",hashcache1.get("two").unwrap());
+    
+    hashcache1.set("three",3);
+    println!("{:?}",hashcache1.get("three").unwrap());
+    
+    let mut hashcache2 : HashCache<String> = HashCache::new();
+    
+    hashcache2.set( "1" , "one".to_string() );
+    hashcache2.set( "2" , "two".to_string() );
+    hashcache2.set( "3" , "three".to_string() );
+    
+    println!("{:?}",hashcache2.get("1").unwrap());
+    println!("{:?}",hashcache2.get("2").unwrap());
+    println!("{:?}",hashcache2.get("3").unwrap());
+    println!("");
+    
+    let mut lru_cache1 : LRU_cache<char> = LRU_cache::new(5);
+    lru_cache1.set( "one" , 'a' );
+    lru_cache1.set( "two" , 'b' );
+    
+    println!("{}",lru_cache1.get("one").unwrap());
+    println!("{}",lru_cache1.get("two").unwrap());
+    
+    lru_cache1.set( "three" , 'c' );
+    println!("{}",lru_cache1.get("three").unwrap());
+    println!("{}",lru_cache1.get("one").unwrap());
+    println!("{:?}",lru_cache1.display());
+}
