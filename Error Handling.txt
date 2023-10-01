@@ -1,0 +1,75 @@
+// Parse string into float and handle the scenario for unsuccessful parsing
+
+fn parse_to_float( s : &str ) -> Result<f64, Box<dyn std::error::Error>> {
+    match s.parse::<f64>() {
+        Ok(val) => Ok(val) ,
+        Err(_) => Err(("String could not be parsed into float").into())
+    }
+}
+
+fn main() {
+    let x = parse_to_float("hd82");
+    println!("{:?}",x);
+}
+__________________________________________________________________________________________________________________________________________________________________________________________
+// Find maximum value in vector while handling the scenario where it is empty
+
+fn get_max<'a>( vec : &'a Vec<i32> ) -> Result<&'a i32, Box<dyn std::error::Error>> {
+    if vec.len() == 0 { return Err("vector is empty".into()) }
+    Ok(vec.iter().max().unwrap())
+}
+
+fn main() {
+    let vec : Vec<i32> = vec![];
+    let max = get_max(&vec);
+    
+    println!("{:?}",max);
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Get the value at the nth index of vector and also handle the scenario for index out of bounds
+
+fn get_nth_index<'a,T>( vec : &'a Vec<T> , index : usize ) -> Result<&'a T, Box<dyn std::error::Error>> {
+    if let Some(val) = vec.get(index) {
+        Ok(val)
+    }
+    else { Err("index out of bounds".into()) }
+}
+
+fn main() {
+    let vec = vec!["hello","there","rowdy","ronda"];
+    
+    println!("{:?}",get_nth_index(&vec,8));
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// parse the string to integer and also handle the scenario for parse failure
+
+fn parse_to_int( s : &str ) -> Result<i32, Box<dyn std::error::Error>> {
+    match s.parse::<i32>() {
+        Ok(val) => Ok(val) ,
+        Err(_) => Err("String could not be parsed into integer".into())
+    }
+}
+
+fn main() {
+    println!("{:?}",parse_to_int("19"));
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Perform division of numbers and also handle the scenario where the divisor is zero
+
+fn divide( a : i32 , b : i32 ) -> Result<f32,&'static str> {
+    if b == 0 {
+        return Err("divide by zero error")
+    }
+    
+    Ok(( a as f32 ) / ( b as f32 ))
+}
+
+fn main() {
+    
+    let result = match divide( 621 , 0 ) {
+        Ok(val) => val ,
+        Err(error) => { println!("{}",error) ; -1.0 }
+    };
+    
+    println!("{}",result);
+}
