@@ -73,3 +73,99 @@ fn main() {
     
     println!("{}",result);
 }
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Check if a number is a positive integer and generate error if it is not
+
+use std::io;
+
+fn is_positive( num :i32 ) -> Result<i32, Box<dyn std::error::Error> > {
+    if num >= 0 { Ok(num) }
+    else { Err("Integer is not Positive".into()) }
+}
+
+fn main() {
+    let mut num = String::new();
+    
+    println!("Enter Postive Integer:");
+    io::stdin().read_line(&mut num).expect("Somethin went wrong while processing input for positive integer");
+    num.pop();
+    
+    let mut num : i32 = num.trim().parse().unwrap();
+    
+    println!("{:?}",is_positive(num));
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// find index of input element in vector else generate error if element does not exist in vector 
+
+fn find_element<T: std::cmp::PartialOrd>( vec : &Vec<T> , element : T ) -> Result< usize , Box<dyn std::error::Error> > {
+    for ( i , v ) in vec.iter().enumerate() {
+        if v == &element {
+            return Ok(i);
+        }
+    }
+    Err("Element not found in Vector".into())
+}
+
+fn main() {
+    let vec = vec![ "hello" , "there" , "amanda" , "jake" , "dragon"];
+    
+    println!("{:?}",find_element( &vec, "jakey" ));
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Divide two floating point integers and generate divide by zero error if the divisor is zero
+
+fn divide( a : f32 , b : f32 ) -> Result<f32, Box<dyn std::error::Error>> {
+    
+    if b == 0.0 {
+        Err("Division by Zero error".into())
+    }
+    else if (a/b).is_infinite() {
+        Err("Overflow occurs from division of numbers".into())
+    }
+    else if (a/b).is_nan() {
+        Err("Underflow occurs from division of numbers".into())
+    }
+    else {
+        Ok(a/b)
+    }
+}
+
+fn main() {
+    let f1 : f32 = 581.44;
+    let f2 : f32 = 63.3;
+    
+    println!("{:?}",divide( f1 , f2 ));
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// parse a string and generate sum of all the numbers in it else generate an error if the string cannot be parsed
+
+use regex::Regex;
+
+fn parse( input : String ) -> Result< i128 , Box<dyn std::error::Error > > {
+    let mut sum : i128 = 0;
+    let numbers = Regex::new("[0-9]+").unwrap();
+    let not_digit_or_comma = Regex::new(r#"[^0-9,]"#).unwrap();
+    
+    if not_digit_or_comma.find(&input).is_some() {
+        return Err("Input string cannot be parsed".into());
+    }
+    
+    match ( input.contains(",") , numbers.find(&input).is_some() ) {
+        ( false , true ) => {} ,
+        ( true , true ) => {},
+        ( _ , _ ) => return Err("Input string cannot be parsed".into())
+    };
+    
+    for num in input.split(",") {
+        sum += num.trim().parse::<i128>().unwrap()
+    }
+    
+    if sum > 9223372036854775807 {
+        Err("Sum exceeds the range of i64 values".into())
+    }
+    else { Ok(sum) }
+}
+
+fn main() {
+    println!("{:?}",parse("83,73,₩".to_string()));
+}
