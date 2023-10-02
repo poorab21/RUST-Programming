@@ -1,0 +1,198 @@
+// Closure for taking sum of two integers
+
+fn sum_closure() -> Box<dyn Fn(i32,i32) -> i32> {
+    Box::new(|x,y| { x + y })
+}
+
+fn main() {
+    let sum = sum_closure();
+    println!("{}",sum(1,2));
+    println!("{}",sum(82,6));
+    println!("{}",sum(54,33));
+    
+    let sum2 = sum_closure();
+    println!("{}",sum2(53,24));
+    println!("{}",sum2(19,67))
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for sum of vector
+
+fn main() {
+    let vec = vec![ 1 , 2 , 3 ];
+    let sum_vec = |v : &Vec<i32>| v.iter().sum::<i32>();
+    
+    println!("{}",sum_vec(&vec));
+}
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning only Some() values from a vector of Option<T> type
+
+fn main() {
+    let mut vec = vec![ None , Some(55) , None , None , Some(66) , None , Some(32) ];
+    
+    let closure = | v : &Vec<Option<i32>> | -> Vec<Option<i32>> {
+        v.clone().into_iter().filter(|x| if let Some(_) = x { true } else { false }).collect()
+    };
+    
+    println!("{:?}",closure(&vec));
+}
+_____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for only returning words from a vector with length greater than 5
+
+fn closure() -> Box<dyn for<'a> Fn( &Vec<&'a str> ) -> Vec<&'a str> > {
+    Box::new(| v : &Vec<&str> | { v.clone().into_iter().filter(|x| x.len() > 5).collect() })
+}
+
+fn main() {
+    let c1 = closure();
+    println!("{:?}",c1(&vec![ "friends" ,"joy" , "andy" , "ronald" , "five"]));
+
+    let mut vec = vec![ "seinfeld", "krabs" , "plankton" , "amy" ];
+    let result_vec = c1(&vec);
+    
+    println!("{:?}",result_vec);
+    vec.push("stone");
+}
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning the length of a vector
+
+fn len_of_vec_closure<T>() -> Box<dyn Fn( &Vec<T> ) -> usize> {
+    Box::new(| v : &Vec<T> | { v.len() })
+}
+
+fn main() {
+    let c1 = len_of_vec_closure();
+    
+    println!("{}",c1(&vec![11.1,8.45,35.8,9.2,9.1,9.2]));
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning the sum of even numbers in a vector
+
+fn sum_of_evens() -> Box<dyn Fn( &Vec<i32> ) -> i32> {
+    Box::new(| v : &Vec<i32> | {
+        v.clone().into_iter().filter( |x| x % 2 == 0 ).sum()
+    })
+}
+
+fn main() {
+    let even_sum = sum_of_evens();
+    
+    println!("{}",even_sum( &vec![ 76 , 2 , 3 , 4 , 10 , 45 , 6 ] ));
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning words from vector that start with vowels
+
+fn start_with_vowels() -> Box<dyn Fn( &Vec<String> ) -> Vec<&String>> {
+    Box::new(
+    | v : &Vec<String> | -> Vec<&String> {
+        v.iter().filter(|word| {
+            match word.to_ascii_lowercase().chars().nth(0).unwrap() {
+                'a' | 'e' | 'i' | 'o' | 'u' => true ,
+                _ => false
+            }
+        }).collect()
+    })
+}
+
+fn main() {
+    let c1 = start_with_vowels();
+    
+    println!("{:?}",c1(&vec![ "orange".to_string() , "hello".to_string() , "agra".to_string() , "exodus".to_string() , "blob".to_string() , "dark".to_string() , "inuit".to_string() ]));
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning the average of numbers less than 10 in a vector
+
+fn main() {
+    let closure = | vec : &Vec<f32> | -> f32 {
+        let filtered : Vec<f32> = vec.clone().into_iter().filter( |x| *x <= 10.0 ).collect();
+        filtered.iter().sum::<f32>() / (filtered.iter().len() as f32)
+    };
+    
+    println!("{}",closure(&vec![11.1,3.3,2.7,8.5,16.9,6.67,7.5]));
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning the product of numbers divisible by 3
+
+fn closure() -> Box<dyn Fn( &Vec<i32> ) -> i32 > {
+    Box::new(| v : &Vec<i32> | {
+        v.clone().into_iter().filter( |x| x % 3 == 0 ).reduce( |acc,e| acc * e ).unwrap()
+    })
+}
+
+fn main() {
+    let closure = closure();
+    println!("{}",closure(&vec![1,2,3,4,6,11,56,33,3]));
+}
+
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for returning the number of occurrences of a character in a word
+
+fn main() {
+    let closure = | s : &str , c : char | -> usize {
+        s.chars().filter( |x| *x == c ).collect::<String>().len()
+    };
+    
+    println!("{}" , closure( "mississippi" , 'm' ) );
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// closure for accepting a vector of typles containing a string and integer and then returning a vector containing only those tuples where the length of string equals the integer in a tuple
+
+fn main() {
+    let closure = | v: Vec<( &'static str , i32 )> | -> Vec< ( &'static str , i32 ) > {
+        v.into_iter().filter( | (x,y) | x.len() == *y as usize ).collect()
+    };
+    
+   let v = vec![
+        ( "howdy" , 5 ) , 
+        ( "there" , 10 ) ,
+        ( "amanda" , 6 ) ,
+        ( "cadmus",  67) ,
+        ( "phineas", 7) ,
+        ( "Clark Kent" , 10)
+   ];
+  println!("{:?}",closure(v));
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// Closure for only returning unique words from a vector in alphabetical order
+
+fn is_unique( vec : &Vec<&str> , word : &str ) -> bool {
+    let mut count = 0;
+    
+    for w in vec {
+        if w == &word { count += 1; }
+    }
+    
+    if count > 1 { false }
+    else { true }
+}
+
+fn closure() -> Box< dyn Fn( Vec<&'static str> ) -> Vec<&'static str> > {
+    Box::new(| v : Vec< &'static str > | {
+        let mut new_vec : Vec<&str> = Vec::new();
+        
+        for word in &v {
+            if is_unique( &v , word ) { new_vec.push(word); } 
+        }
+        new_vec.sort();
+        new_vec
+    })
+}
+
+fn main() {
+   let closure = closure();
+   
+   println!("{:?}", closure(vec!["batman","wonder woman","superman","flash","wonder woman","flash","superman","batman"]));
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// closuring for taking a vector of string slices and returning a vector of strings with the same content but with the words of length greater than 5 in uppercase
+
+fn main() {
+    let closure = | v : &Vec<&'static str> | -> Vec<String> {
+        v.clone().into_iter().map( |word| if word.len() > 5 { word.to_ascii_uppercase() } else { word.to_string() } ).collect()
+    };
+    
+    println!("{:?}",closure(&vec!["hello","partner","tamberine","tommy","lily","friends"]));
+}
