@@ -1,0 +1,19 @@
+fn longest_common_prefix<'a>( s1 : &'a str , s2 : &'a str ) -> &'a str {
+    let mut i = 0 ;
+    
+    while s1.chars().nth(i).unwrap() == s2.chars().nth(i).unwrap() {
+        i += 1;
+    }
+    
+    &s1[0..i]
+}
+
+fn main() {
+    let s1 = String::from("ow did ye do it");
+    let s2 = String::from("how did you know");
+    
+    let lcp = longest_common_prefix(&s1,&s2);
+    println!("{}",lcp);
+    
+    
+}

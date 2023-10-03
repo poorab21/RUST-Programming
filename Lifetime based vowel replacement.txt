@@ -1,0 +1,22 @@
+use regex::Regex;
+
+fn replace_vowels<'a>( s : &'a str , replacement: char ) -> String {
+    let mut new_string = String::new();
+    let vowels = Regex::new("(a|e|i|o|u)").unwrap();
+    
+    for c in s.chars() {
+        if vowels.find( format!("{}",c).as_str() ).is_some() {
+            new_string.push(replacement);
+            continue;
+        }
+        new_string.push(c);
+    }
+    new_string
+}
+
+fn main() {
+    let s = String::from("Hello carla");
+    let c = 'c';
+    
+    println!("{}",replace_vowels(&s,c));
+}
