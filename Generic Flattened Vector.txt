@@ -1,0 +1,14 @@
+fn flatten<T>( vec : Vec<Vec<T>> ) -> Vec<T> {
+    let mut flattened_vec : Vec<T> = Vec::new();
+    
+    for vector in vec {
+        for val in vector {
+            flattened_vec.push(val);
+        }
+    }
+    flattened_vec
+}
+
+fn main() {
+    println!("{:?}" , flatten( vec![ vec!['a','z'] , vec!['t','j','a','o'] ] ) );
+}
