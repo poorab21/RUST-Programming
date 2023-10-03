@@ -1,0 +1,20 @@
+pub trait only_str_trait {}
+
+impl only_str_trait for String {}
+
+fn reversed_elements<T: only_str_trait + Clone + ToString + From<String>>( vec : &Vec<T> ) -> Vec<T> {
+    let mut new_vec : Vec<T> = Vec::new();
+    
+    for i in 0..vec.len() {
+        new_vec.push( vec[i].clone().to_string().chars().rev().collect::<String>().into() )
+    }
+    new_vec
+}
+
+fn main() {
+    let vec_string : Vec<String> = vec![
+      
+    ];
+    
+    println!("{:?}",reversed_elements(&vec_string));
+}

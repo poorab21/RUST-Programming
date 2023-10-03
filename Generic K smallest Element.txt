@@ -1,0 +1,32 @@
+use std::default::Default;
+use std::mem;
+
+fn k_smallest<T: num::Num + Default + Clone + std::cmp::PartialOrd>( v : &Vec<T> , kth : usize ) -> &T {
+    let mut temp = Default::default();
+    let mut vec_clone = v.clone();
+    
+    for i in 0..vec_clone.len() {
+        for j in i..vec_clone.len() {
+            if vec_clone[i] > vec_clone[j] {
+                temp = vec_clone[j].clone();
+                temp = mem::replace( &mut vec_clone[i] , temp );
+                vec_clone[j] = temp;
+            }
+        }
+    }
+    let index = v.iter().position(|x| x == &vec_clone[kth-1] );
+    v.get(index.unwrap()).unwrap()
+}
+
+fn main() {
+    let mut vec = vec![ -7 , -2 , 6 , 332 ];
+    let kth = 5;
+    
+    if kth > vec.len() || kth == 0 {
+        println!("kth input is not valid");
+        return;
+    }
+    
+    let kth_smallest = k_smallest( &vec , kth );
+    println!("kth smallest value = {}",kth_smallest);
+}

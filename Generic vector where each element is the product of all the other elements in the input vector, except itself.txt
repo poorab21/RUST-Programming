@@ -1,0 +1,26 @@
+fn product_of_other_elements<T: num::Num + std::ops::MulAssign + Clone + num::One>( v : &Vec<T> ) -> Vec<T> {
+    let mut vec1 : Vec<T> = Vec::new();
+    let mut product = T::one();
+    
+    for i in 0..v.len() {
+        for j in 0..v.len() {
+            if i != j {
+                product *= v[j].clone();
+            }
+        }
+        vec1.push(product);
+        product = T::one();
+    }
+    vec1
+}
+
+fn main() {
+    let mut vec = vec![ 3.5 , 4.4 , 5.5 ];
+    
+    if vec.len() < 2 {
+        println!("vector must have atleast two elements");
+        return;
+    }
+    
+    println!("{:?}",product_of_other_elements(&vec));
+}

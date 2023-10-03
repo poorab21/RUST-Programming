@@ -1,0 +1,22 @@
+pub trait allowed_types {}
+
+impl allowed_types for String {}
+
+fn to_uppercase<T: allowed_types + ToString + From<String>>( vec : &Vec<T> ) -> Vec<T> {
+    let mut new_vec : Vec<T> = Vec::new();
+    
+    for word in vec {
+        new_vec.push( word.to_string().to_ascii_uppercase().into() );
+    }
+    new_vec
+}
+
+fn main() {
+    let vec : Vec<String> = vec![
+        "lilith sternin".to_string() , 
+        "Sam Malone".to_string() ,
+        "Clif Clavin".to_string() ,
+        "Norm Peterson".to_string()
+    ];
+    println!("{:?}",to_uppercase(&vec));
+}
