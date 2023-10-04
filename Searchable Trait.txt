@@ -1,0 +1,35 @@
+pub trait Searchable<T: std::cmp::PartialOrd + std::fmt::Display> {
+    fn search( &self , search_query : T ) -> isize;
+}
+
+impl<T: std::cmp::PartialOrd + std::fmt::Display> Searchable<T> for Vec<T> {
+    fn search( &self , search_query : T ) -> isize {
+        for (index,& ref val) in self.iter().enumerate() {
+            if *val == search_query { return index as isize; }
+        }
+        -1
+    }
+}
+
+impl<T: std::cmp::PartialOrd + std::fmt::Display> Searchable<T> for String {
+    fn search( &self , search_query : T ) -> isize {
+        let search_string = format!("{}",search_query);
+        
+        match self.find(&search_string) {
+            Some(val) => { val as isize } ,
+            None => -1
+        }
+    }
+}
+
+fn main() {
+    let s = String::from("hello there");
+    let vec = vec![
+        "12 angry men" ,
+        "ronald" , 
+        "godfather" , 
+        "tarzan"
+    ];
+    
+    println!("{}",s.search(""));
+}
