@@ -1,0 +1,36 @@
+use std::ops::Deref;
+#[derive(Debug)]
+
+struct MyBox<T: std::fmt::Debug> {
+    data : Box<T>
+}
+
+impl<T: std::fmt::Debug> MyBox<T> {
+    fn new( val : T ) -> Self {
+        Self {
+            data : Box::new(val)
+        }
+    }
+}
+
+impl<T: std::fmt::Debug> Deref for MyBox<T> {
+    type Target = T;
+    
+    fn deref(&self) -> &Self::Target {
+        &self.data
+    }
+}
+
+impl<T: std::fmt::Debug> Drop for MyBox<T> {
+    fn drop( &mut self ) {
+        println!("{:?} dropped",self)
+    }
+}
+
+fn main() {
+    let mybox = MyBox::new(63.8);
+    let mybox2 = MyBox::new(72.2);
+    
+    println!("{}",*mybox);
+    println!("{}",*mybox2);
+}
