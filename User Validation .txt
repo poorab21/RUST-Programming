@@ -1,0 +1,42 @@
+use regex::Regex;
+
+const ids : [ u32 ; 5 ] = [ 1 , 2 , 3 , 4 , 5 ];
+
+#[derive(Debug)]
+struct User {
+    Id: u32 ,
+    name : String , 
+    email : String , 
+}
+
+impl User {
+    fn new( Id : u32 , name : String , email : String ) -> Self {
+        Self {
+            Id, 
+            name,
+            email
+        }
+    }
+}
+
+fn new_user( Id : u32 , name : String , email : String ) -> Result< User , String > {
+    
+    if ids.contains( &(Id as u32) ) {
+        Err("Id must be unique".into())
+    }
+    else if Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap().find(&email).is_none() {
+        Err("Email is invalid".into())
+    }
+    else {
+        Ok(User::new( Id , name , email ))
+    }
+}
+
+fn main() {
+    let user1 = new_user( 7, "Poorab Gangwani".to_string() , "poorabgangwani19@gmail.com".to_string() );
+    
+    match user1 {
+        Ok(user) => println!("{:#?} created",user) ,
+        Err(e) => println!("{:?}",e)
+    }
+}

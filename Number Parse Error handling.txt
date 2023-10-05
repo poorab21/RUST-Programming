@@ -1,0 +1,11 @@
+fn parse_number( num : &str ) -> Result< i64 , Box<dyn std::error::Error> > {
+    let parsed_number : i64 = num.trim().parse()?;
+    Ok(parsed_number)
+}
+
+fn main() {
+    match parse_number("7") {
+        Ok(val) => println!("{val}") ,
+        Err(e) => println!("{:?}",e)
+    };
+}
