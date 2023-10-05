@@ -1,0 +1,32 @@
+use std::ops::Deref;
+#[derive(Debug)]
+
+struct MyBox {
+    data : Box<i32>
+}
+
+impl MyBox {
+    fn new( val : i32 ) -> Self {
+        Self {
+            data : Box::new(val)
+        }
+    }
+}
+
+impl Deref for MyBox {
+    type Target = i32;
+    
+    fn deref( &self ) -> &Self::Target {
+        &(*self.data)
+    }
+}
+
+fn square_of( mybox : &i32) -> i32 {
+    *mybox * *mybox
+}
+
+fn main() {
+    let mybox = MyBox::new(10);
+    
+    println!("{}",square_of(&mybox));
+}

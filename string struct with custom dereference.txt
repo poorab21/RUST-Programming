@@ -1,0 +1,51 @@
+use std::ops::DerefMut;
+use std::ops::Deref;
+
+struct MyString {
+    data : String
+}
+
+impl MyString {
+    fn new() -> Self {
+        Self {
+            data : "".to_string()
+        }
+    }
+    
+    fn set( &mut self , data : String ) {
+        self.data = data;
+    }
+    
+    fn get( &self ) -> &str {
+        &(self.data)
+    }
+}
+
+impl DerefMut for MyString {
+    fn deref_mut( &mut self ) -> &mut String {
+        &mut self.data
+    }
+}
+
+impl Deref for MyString {
+    type Target = String;
+    
+    fn deref( &self ) -> &Self::Target {
+        &self.data
+    }
+}
+
+fn append( s : &mut MyString ) {
+    s.push_str(" world!");
+}
+
+fn main() {
+    let mut my_string1 = MyString::new();
+    
+    my_string1.set("hello".to_string());
+    
+    append( &mut my_string1 );
+    println!("{}",my_string1.get());
+    append( &mut my_string1 );
+    println!("{}",my_string1.get());
+}

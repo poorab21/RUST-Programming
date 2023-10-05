@@ -1,0 +1,40 @@
+use std::ops::Deref;
+struct myStr<'a> {
+    data : &'a str
+}
+
+impl<'a> myStr<'a> {
+    fn new( data: &'a str) -> Self {
+        Self {
+            data 
+        }
+    }
+    
+    fn set( &mut self,  data : &'a str ) {
+        self.data = data;
+    }
+    
+    fn get( &self ) -> &str {
+        self.data
+    }
+}
+
+impl<'a> Deref for myStr<'a> {
+    type Target = str;
+    
+    fn deref( &self ) -> &Self::Target {
+        self.data
+    }
+}
+
+fn main() {
+    let mut my_str1 = myStr::new("hello");
+    
+    println!("{}",&(*my_str1));
+     
+    println!("{}",(*my_str1).len());
+     
+    my_str1.set("Dragon Ball Z");
+    println!("{}",&(*my_str1));
+    println!("{}",(*my_str1).len());
+}

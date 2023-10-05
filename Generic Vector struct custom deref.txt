@@ -1,0 +1,62 @@
+use core::fmt::Formatter;
+use std::ops::Deref;
+use std::fmt;
+use std::default::Default;
+
+struct MyVec<T> {
+    data : Vec<T>
+}
+
+impl<T: fmt::Debug + Default + std::ops::AddAssign + Clone> fmt::Debug for MyVec<T> {
+    fn fmt( &self , f : &mut Formatter<'_> ) -> fmt::Result {
+        write!(f,"{:?}",self.data)
+    }
+}
+
+impl<T: fmt::Debug + Default + Clone> Deref for MyVec<T> {
+    type Target = Vec<T>;
+    
+    fn deref( &self ) -> &Vec<T> {
+        &self.data
+    }
+}
+
+impl<T: fmt::Debug + Default + std::ops::AddAssign + Clone> MyVec<T> {
+    fn new() -> Self {
+        
+        let mut data : Vec<T> = Vec::new();
+        
+        Self {
+            data
+        }
+    }
+    
+    fn push( &mut self , val : T ) {
+        self.data.push(val);
+    }
+}
+
+fn sum_of<T: Default + std::ops::AddAssign + Clone>( vec : &MyVec<T> ) -> T {
+    let mut sum : T = Default::default();
+    for num in &vec.data {
+        sum += num.clone();
+    }
+    sum
+}
+
+fn main() {
+    let mut myVec1 = MyVec::new();
+    
+    myVec1.push(1u32);
+    myVec1.push(122u32);
+    myVec1.push(34u32);
+    
+    println!("{:?}",myVec1);
+    
+    println!("{}",sum_of(&myVec1));
+    
+    myVec1.push(33u32);
+    myVec1.push(51u32);
+    println!("{:?}",myVec1);
+    println!("{:?}",sum_of(&myVec1));
+}

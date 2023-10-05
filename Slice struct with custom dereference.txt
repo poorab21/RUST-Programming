@@ -1,0 +1,44 @@
+use std::ops::Deref;
+struct MyStruct<'a> {
+    slice : &'a [i32]
+}
+
+impl<'a> MyStruct<'a> {
+    fn new( slice : &'a [i32] ) -> Self {
+        Self {
+            slice
+        }
+    }
+    
+    fn set( &mut self,  slice : &'a [i32] ) {
+        self.slice = slice;
+    }
+    
+    fn get( &self ) -> &[i32] {
+        self.slice
+    }
+}
+
+impl<'a> Deref for MyStruct<'a> {
+    type Target = [i32];
+    
+    fn deref( &self ) -> &Self::Target {
+        self.slice
+    }
+}
+
+fn sum( slice : &MyStruct ) -> i32 {
+    (**slice).iter().sum::<i32>()
+}
+
+fn main() {
+    let mut my_struct1 = MyStruct::new(&[11,9,6,19,46]);
+
+    my_struct1.set(&[16,19,32,42,9]);
+    println!("{:?}",my_struct1.get());
+    println!("{}",sum( &my_struct1 ));
+    
+    my_struct1.set(&[1,9,7,55,7]);
+    println!("{:?}",my_struct1.get());
+    println!("{}",sum( &my_struct1 ));
+}

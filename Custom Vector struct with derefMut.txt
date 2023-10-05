@@ -1,0 +1,43 @@
+use std::ops::DerefMut;
+use std::ops::Deref;
+struct MyVec<T> {
+    vec : Vec<T>
+}
+
+impl<T> MyVec<T> {
+    fn new() -> Self {
+        let vec : Vec<T> = Vec::new();
+        
+        Self {
+            vec
+        }
+    }
+}
+
+impl<T> Deref for MyVec<T> {
+    type Target = Vec<T>;
+    
+    fn deref( &self ) -> &Self::Target {
+        &self.vec
+    }
+}
+
+impl<T> DerefMut for MyVec<T> {
+    fn deref_mut( &mut self ) -> &mut Vec<T> {
+        &mut self.vec
+    }
+}
+
+
+
+fn main() {
+    let mut my_vec = MyVec::new();
+    
+  
+    (*my_vec).push(18);
+  
+    println!("{:?}",*my_vec);
+    
+    (*my_vec).push(65);
+    println!("{:?}",*my_vec);
+}
