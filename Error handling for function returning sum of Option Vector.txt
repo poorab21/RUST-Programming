@@ -1,0 +1,23 @@
+fn calculate_avg( vec : &Vec<Result<i32, String>> ) -> Result<f64,String> {
+    let mut sum : i32 = 0;
+    
+    for i in 0..vec.len() {
+        if let Ok(num) = vec.get(i).unwrap() {
+            sum += num;
+        }
+        else {
+            return Err("Vector contains Err values".to_string());
+        }
+    }
+    
+    Ok(sum as f64 / vec.len() as f64)
+}
+
+fn main() {
+    println!("{:?}",calculate_avg( &vec![ 
+    Ok(1) , 
+    Ok(7) , 
+    Ok(17) ,
+    Ok(88) 
+    ] ));
+}

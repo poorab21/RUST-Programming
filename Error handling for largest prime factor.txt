@@ -1,0 +1,25 @@
+fn is_prime( num : i32 ) -> bool {
+    if num <= 1 { return false; }
+    
+    for i in 2..num {
+        if num % i == 0 { return false; }
+    }
+    true
+}
+
+fn largest_prime_factor( num : i32 ) -> Result< i32 , String > {
+    if num <= 0 {
+        return Err("Input number is invalid".into());
+    }
+    
+    let mut prime_factor = 1;
+    
+    for i in 2..=num {
+        if num % i == 0 && is_prime(i) { prime_factor = i; }
+    }
+    Ok(prime_factor)
+}
+
+fn main() {
+    println!("{:?}",largest_prime_factor(-9));
+}

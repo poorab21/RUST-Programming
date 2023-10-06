@@ -1,0 +1,14 @@
+fn calculate_avg( vec : Vec<f64> ) -> Result< f64 , Box<dyn std::error::Error> > {
+    if vec.len() == 0 { return Err("vector is empty".into()); }
+    
+    if vec.iter().sum::<f64>() > 1.7976931348623157 * 10e307 {
+        return Err("Overflow occurs from sum of values".into());
+    }
+    
+    Ok(vec.iter().sum::<f64>() /( vec.iter().len() as f64 ))
+    
+}
+
+fn main() {
+    println!("{:?}",calculate_avg(vec![ 1.7976931348623157 * 10e307 ,  1.7976931348623157 * 10e299  ]));
+}
