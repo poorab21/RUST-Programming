@@ -1,0 +1,27 @@
+#[derive(Debug)]
+enum Direction {
+    North , 
+    South ,
+    East ,
+    West
+}
+
+fn opposite_direction( direction : Direction ) -> Direction {
+    if let Direction::North = direction {
+        Direction::South
+    }
+    else if let Direction::South = direction {
+        Direction::North
+    }
+    else if let Direction::West = direction {
+        Direction::East
+    }
+    else {
+        Direction::West
+    }
+}
+
+
+fn main() {
+    println!("{:?}",opposite_direction( Direction::East ));
+}

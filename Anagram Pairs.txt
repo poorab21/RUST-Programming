@@ -1,0 +1,47 @@
+use std::collections::HashMap;
+
+fn are_anagrams( word : &str , word2 : &str ) -> bool {
+    let mut character_count : HashMap<char,i32> = HashMap::new();
+    
+    for c in word.chars() {
+      *(character_count.entry(c).or_insert(0)) += 1;
+    }
+    
+    for c in word2.chars() {
+        if character_count.contains_key(&c) {
+            *(character_count.entry(c).or_insert(0)) -= 1;
+        }
+        else { return false; }
+    }
+    
+    for (_,&value) in &character_count {
+        if value != 0 { return false; }
+    }
+    
+    true
+}
+
+fn anagram_pairs<'a>( vec : &'a Vec<String> ) -> Vec<( &'a str , &'a str )> {
+    let mut anagram_pairs : Vec<( &str , &str )> = Vec::new();
+    
+    for i in 0..vec.len() {
+        for j in i+1..vec.len() {
+            if are_anagrams( &vec[i] , &vec[j] ) {
+                anagram_pairs.push((&vec[i],&vec[j]));
+            }
+        }
+    }
+    anagram_pairs
+}
+
+fn main() {
+    println!( "{:#?}" , anagram_pairs( &vec![ 
+        String::from("care") ,
+        String::from("race") ,
+        String::from("heart") ,
+        String::from("cera") ,
+        String::from("earth") ,
+        String::from("reath") ,
+        String::from("abra")
+    ] ));
+}

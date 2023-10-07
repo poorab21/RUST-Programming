@@ -1,0 +1,17 @@
+trait MathOperation {
+    type Output;
+    fn perform_operation( a : Self::Output , b : Self::Output ) -> Self::Output;
+}
+
+impl MathOperation for i32 {
+    type Output = i32;
+    
+    fn perform_operation( a : Self::Output , b : Self::Output ) -> Self::Output {
+        a + b
+    }
+}
+
+fn main() {
+    
+    println!("{}",i32::perform_operation(71,17));
+}

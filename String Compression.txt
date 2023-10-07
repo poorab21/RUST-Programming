@@ -1,0 +1,36 @@
+fn compress_string( s : &str ) -> String {
+    let mut compressed_string = String::new();
+    let mut i = 0;
+    let mut j = i;
+    let mut count = 0;
+    
+    while i < s.len() {
+        
+        if s.chars().nth(i).unwrap() == ' ' { 
+            i += 1 ;
+            j = i;
+            compressed_string += " ";
+        }
+        
+        while j < s.len() && s.chars().nth(i).unwrap() == s.chars().nth(j).unwrap() {
+            count += 1;
+            j += 1;
+        }
+        
+        if count > 1 {
+            compressed_string += format!("{}{}",s.chars().nth(i).unwrap(),count).as_str();
+        }
+        else {
+            compressed_string += format!("{}",s.chars().nth(i).unwrap()).as_str();
+        }
+        
+        i += count;
+        j = i;
+        count = 0;
+    }
+    compressed_string
+}
+
+fn main() {
+    println!("{}",compress_string("mississippi"));
+}

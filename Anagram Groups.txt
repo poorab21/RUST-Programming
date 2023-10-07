@@ -1,0 +1,61 @@
+use std::collections::HashMap;
+
+fn are_anagrams( word : &str , word2 : &str ) -> bool {
+    let mut character_count : HashMap<char,i32> = HashMap::new();
+    
+    for c in word.chars() {
+      *(character_count.entry(c).or_insert(0)) += 1;
+    }
+    
+    for c in word2.chars() {
+        if character_count.contains_key(&c) {
+            *(character_count.entry(c).or_insert(0)) -= 1;
+        }
+        else { return false; }
+    }
+    
+    for (_,&value) in &character_count {
+        if value != 0 { return false; }
+    }
+    
+    true
+}
+
+fn anagram_groups( mut vec : Vec<String> ) -> Vec<Vec<String>> {
+    let mut anagram_groups : Vec<Vec<String>> = Vec::new();
+    
+    while vec.len() > 0 {
+        let mut temp_vec : Vec<String> = Vec::new();
+        let mut i = 1;
+        
+        while i < vec.len() {
+            if are_anagrams( &vec[0] , &vec[i] ) {
+                temp_vec.push(vec.remove(i));
+            }
+            else {
+                i += 1;
+            }
+        }
+        
+        if temp_vec.len() > 0 { 
+            temp_vec.push( vec.remove(0) );
+            anagram_groups.push(temp_vec);
+        }
+        else {
+            vec.remove(0);
+        }
+    }
+    anagram_groups
+}
+
+fn main() {
+    println!("{:#?}",anagram_groups(vec![
+        "care".to_string() ,
+        "race".to_string() ,
+        "cera".to_string() ,
+        "dracula".to_string() ,
+        "alucard".to_string() ,
+        "racudal".to_string() ,
+        "spence".to_string()
+    ]));
+}

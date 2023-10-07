@@ -1,0 +1,37 @@
+enum Shape {
+    Circle(i32) ,
+    Rectangle(i32,i32) ,
+    Square(i32) 
+}
+
+impl Shape {
+    fn Circle( radius : i32 ) -> Self {
+      Self::Circle(radius)
+    }
+    
+    fn Rectangle( length : i32 , width : i32 ) -> Self {
+        Self::Rectangle( length , width )
+    }
+    
+    fn Square( side : i32 ) -> Self {
+        Self::Square(side)
+    }
+}
+
+fn calculate_area( shape : Shape ) -> f64 {
+    match shape {
+        Shape::Circle( radius ) =>  {
+            3.14 * (radius as f64) * ( radius as f64)
+        },
+        Shape::Rectangle( length , width ) => {
+            (length * width) as f64
+        }
+        Shape::Square(side) => {
+            (side as f64) * (4 as f64)
+        }
+    }
+}
+
+fn main(){
+    println!("{}",calculate_area( Shape::Circle(19)));
+}

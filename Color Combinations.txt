@@ -1,0 +1,24 @@
+enum Color {
+    Red ,
+    Green ,
+    Blue
+}
+
+fn mix_colors( color1 : Color , color2 : Color ) -> &'static str {
+    match ( color1 , color2 ) {
+        ( Color::Red , Color::Blue ) | ( Color::Blue , Color::Red ) => {
+            "Purple"
+        },
+        ( Color::Red , Color::Green ) | ( Color::Green , Color::Red ) => {
+            "Yellow" 
+        },
+        ( Color::Blue , Color::Green ) | ( Color::Green , Color::Blue ) => {
+            "Teal"
+        },
+        _ => "Input Colors not recognized"
+    }
+}
+
+fn main() {
+    println!("{}",mix_colors( Color::Red , Color::Green ));
+}

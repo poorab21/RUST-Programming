@@ -1,0 +1,27 @@
+fn is_rotation( s1 : &str , s2 : &str ) -> bool {
+    if s1.len() != s2.len() {
+        return false;
+    }
+    
+    let first_char = s1.chars().nth(0).unwrap();
+    let mut index = 0;
+    let mut flag = false;
+    
+    'outer : while index < s1.len() {
+        for i in 0..s1.len() {
+            if s1.chars().nth(i).unwrap() != s2.chars().nth( (index + i) % s1.len() ).unwrap() {
+                break;
+            }
+            else if s1.chars().nth(i).unwrap() == s2.chars().nth( (index + i) % s1.len() ).unwrap() && i == s1.len() - 1{
+                flag = true;
+                break 'outer;
+            }
+        }
+        index += 1;
+    }
+    flag
+}
+
+fn main() {
+    println!("{}",is_rotation("ella","liel"));
+}
