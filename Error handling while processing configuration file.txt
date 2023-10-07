@@ -1,0 +1,23 @@
+use std::fs::File;
+use std::io::ErrorKind;
+use std::io::Read;
+
+fn read_file_contents( filename : &str ) -> Result< String , Box< dyn std::error::Error > > {
+    let mut file = File::open(filename);
+    let mut content = String::new();
+
+    match file {
+        Ok(mut f) => { match f.read_to_string(&mut content) {
+            Ok(_) => Ok(content) ,
+            Err(e) => { Err("{e}".into()) }
+        } } ,
+        Err(e) => match e.kind() {
+            ErrorKind::NotFound => { return Err("File not found".into()); } ,
+            error => { Err("Some other error occurred".into()) }
+        }
+    }
+}
+
+fn main() {
+    println!("{:?}",read_file_contents("C://Users//SAIF UR REHMAN//Desktop//RUST Training//week4//src//file.txt"));
+}
