@@ -1,0 +1,56 @@
+use std::any::type_name;
+
+fn type_of<T>( _ : T ) -> &'static str {
+    &type_name::<T>()[..]
+}
+
+fn large_enough<T: Clone + std::fmt::Display + std::cmp::PartialOrd>( vec : &Vec<T> ) -> Vec<T> {
+    let typename = type_of(vec[0].clone());
+    
+    if typename.contains("&str") || typename.contains("String") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).len() > 10 ).collect()
+    }
+    else if typename.contains("bool") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem) == "true".to_string() ).collect()
+    }
+    else if typename.contains("f32") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<f32>().unwrap() > 25.0 ).collect()
+    }
+    else if typename.contains("f64") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<f32>().unwrap() > 25.0 ).collect()
+    }
+    else if typename.contains("i8") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<i8>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("i16") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<i16>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("i32") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<i32>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("i64") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<i64>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("u8") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<u8>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("u16") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<u16>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("u32") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<u32>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("u64") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<u64>().unwrap() > 25  ).collect()
+    }
+    else if typename.contains("char") {
+        vec.clone().into_iter().filter( |elem| format!("{}",elem).trim().parse::<char>().unwrap() > 'g'  ).collect()
+    }
+    else {
+        panic!("values of invalid type entered");
+    }
+}
+
+fn main() {
+    println!("{:?}",large_enough( &vec![ "hello tgere".to_string() , "appollonia".to_string() ]));
+}
