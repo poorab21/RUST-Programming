@@ -1,0 +1,168 @@
+// datetime module ( my_rust_program package )
+
+use chrono::Local;
+use chrono::DateTime;
+
+pub fn datetime() -> DateTime<Local> {
+    Local::now()
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Geometry module ( my_rust_program package )
+
+pub fn area_of_circle( radius : f64 ) -> f64 {
+    3.14 * radius * radius
+}
+
+pub fn area_of_triangle( base : f64 , height : f64 ) -> f64 {
+    (( (1 as f64) / (2 as f64) )) * base * height
+}
+
+pub fn area_of_rectangle( width : f64 , height : f64 ) -> f64 {
+    width * height
+}
+
+pub fn perimeter_of_rectangle( length : u32 , breadth : u32 ) -> u32 {
+    ( 2 * length ) + ( 2 * breadth )
+}
+
+pub fn circumference_of_circle( radius : f64 ) -> f64 {
+    2_f64 * 3.14 * radius
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// Math module ( my_rust_program package )
+
+pub fn add( x : i64 , y : i64 ) -> i64 {
+    x + y
+}
+
+pub fn subtract( x : i64 , y : i64 ) -> i64 {
+    x - y 
+}
+
+pub fn multiply( x : i64 , y : i64 ) -> i64 {
+    x * y
+}
+
+pub fn divide( x : i64 , y : i64 ) -> i64 {
+    x / y
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// random module ( my_rust_program package )
+
+use crate::Rng;
+
+pub fn generate_random() -> i32 {
+    rand::thread_rng().gen()
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// util module ( my_rust_program package )
+
+pub use bookshelf::book::Book;
+
+pub fn display_book( book : &Book ) {
+    println!("{}, by {}, page count upto {}",book.title,book.author,book.pages);
+}
+___________________________________________________________________________________________________________________________________________________________________________________________
+// book module ( bookshelf package)
+
+pub struct Book {
+    pub title : String ,
+    pub author : String , 
+    pub pages : u32
+}
+
+impl Book {
+    pub fn new( title : String , author : String , pages : u32 ) -> Self {
+        Self {
+            title ,
+            author ,
+            pages
+        }
+    }
+
+    pub fn title( &self ) -> &str {
+        &self.title
+    }
+
+    pub fn author( &self ) -> &str {
+        &self.author
+    }
+
+    pub fn pages( &self ) -> u32 {
+        self.pages
+    }
+
+    pub fn set_title( &mut self , title : String ) {
+        self.title = title;
+    }
+
+    pub fn set_pages( &mut self , pages : u32 ) {
+        self.pages = pages;
+    }
+
+    pub fn set_author( &mut self , author : String ) {
+        self.author = author;
+    } 
+}
+____________________________________________________________________________________________________________________________________________________________________________________________
+// lib.rs ( bookshelf package )
+
+pub mod book;
+pub mod status;
+____________________________________________________________________________________________________________________________________________________________________________________________
+// status module ( bookshelf package )
+
+pub enum Status {
+    active ,
+    inactive ,
+    suspended
+}
+
+___________________________________________________________________________________________________________________________________________________________________________________________
+// main.rs ( my_rust_program package )
+
+pub mod random;
+pub mod math;
+pub mod geometry;
+pub mod datetime;
+pub mod util;
+
+use rand::Rng;
+use crate::math::{ add , subtract , multiply , divide };
+use crate::random::generate_random;
+use crate::geometry::{ area_of_circle , area_of_rectangle , area_of_triangle , circumference_of_circle , perimeter_of_rectangle };
+use crate::datetime::datetime;
+use crate::util::{ display_book , Book };
+
+
+fn main() {
+    // println!("addition = {}",add(14,52));
+    // println!("Product = {}",multiply(8,12));
+    // println!("Subtraction = {}",subtract(33,3));
+    // println!("Quotient = {}",divide(4,41));
+
+    // println!("{}",generate_random());
+    // println!("area of triangle = {}",area_of_triangle(1.4,6.0));
+
+    // println!("area of circle = {}",area_of_circle(2.2));
+    // println!("area of rectangle = {}",area_of_rectangle(27.2,4.2));
+
+    // println!("Circumference of circle = {}",circumference_of_circle(8.71));
+    // println!("perimeter of rectangle = {}",perimeter_of_rectangle(11,9));
+
+    // println!("current date and time = {}",datetime());
+
+    // let mut book1 = Book::new( "Harry Potter 2".to_string() , "J.K. Rowling".to_string() , 176 );
+    // let mut book2 = Book::new( "My name is Khan".to_string() , "Karan Johar".to_string() , 199 );
+    
+    // book1.set_title("Harry Potter and the chamber of secrets".to_string());
+    // book2.set_author("SRK".to_string());
+    // book1.set_pages(200);
+
+    // display_book(&book1);
+    // display_book(&book2);
+}
