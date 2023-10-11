@@ -1,0 +1,35 @@
+fn is_valid_brackets( brackets : &str ) -> bool {
+    let mut stack : Vec<char> = Vec::new();
+    for bracket in brackets.chars() {
+        if bracket == '{' || bracket == '[' || bracket == '(' {
+            stack.push(bracket);
+        }
+        else if bracket == '}' && ( stack.is_empty() || stack.pop().unwrap() != '{' ) {
+            return false;
+        }
+        else if bracket == ']' && ( stack.is_empty() || stack.pop().unwrap() != '[' ) {
+            return false;
+        }
+        else if bracket == ')' && ( stack.is_empty() || stack.pop().unwrap() != '(' ) {
+            return false;
+        }
+    }
+    true 
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn check_valid_brackets() {
+        let brackets = "({})[[{()}{}]][({{}})]";
+        assert_eq!( is_valid_brackets(brackets) , true );
+    }
+    
+    #[test]
+    fn check_invalid_brackets() {
+        let brackets = "]]]";
+        assert_eq!( is_valid_brackets(brackets) , false );
+    }
+}
