@@ -1,0 +1,20 @@
+fn distance_between( x : ( i32 , i32 ) , y : ( i32 , i32 ) ) -> f32 {
+    format!("{:.2}",((( x.0 - y.0 ).pow(2) + ( x.1 - y.1 ).pow(2)) as f64).sqrt() as f32).trim().parse().unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+
+    #[test]
+    fn check_distance_between() -> Result< () , Box< dyn std::error::Error> > {
+        let point1 = ( 16 , 32 );
+        let point2 = ( 16 , 32 );
+        println!("{}",distance_between(point1,point2));
+        if distance_between( point1 , point2 ) == 0.0 {
+            return Ok(());
+        }
+        Err(format!("cartesian distance between {:?} and {:?} was miscalculated",point1,point2).as_str().into())
+    }
+}

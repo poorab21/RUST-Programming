@@ -1,0 +1,44 @@
+fn binary_search( vec : &mut Vec<i64> , value : i64 ) -> i64 {
+    vec.sort();
+    
+    let mut lower = 0;
+    let mut upper = vec.len();
+    let mut mid = (lower + upper) / 2;
+    
+    while lower != upper {
+        if lower == upper - 1 && value != vec[mid] {
+            break;
+        }
+        else if vec[mid] > value {
+            upper = mid;
+        }
+        else if vec[mid] < value {
+            lower = mid;
+        }
+        else if vec[mid] == value {
+            return mid as i64;
+        }
+        
+        mid = (lower + upper) / 2;
+    }
+    -1 as i64
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn check_binary_search() {
+        let mut vector = vec![ 11 , 12 , 12 , 12 , 21 ];
+        let search_value = 21;
+        assert_eq!( binary_search( &mut vector , search_value ) , 4i64 , "binary search is not returning the right index for an existing value {}" , search_value );
+    }
+    
+    #[test]
+    fn check_binary_search_nonexistent() {
+        let mut vector = vec![ 6 , 2 , 10 , 6 , -9 ];
+        let search_value = 12;
+        assert_eq!( binary_search( &mut vector , search_value ) , -1 , "binary search is not returning -1 for a non existing value {}", search_value);
+    }
+}

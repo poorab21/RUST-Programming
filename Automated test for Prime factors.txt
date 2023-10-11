@@ -1,0 +1,32 @@
+fn is_prime( num : u32 ) -> bool {
+
+    for i in 2..num {
+        if num % i == 0 {
+            return false
+        }
+    }
+    true
+}
+
+fn prime_factors( num : u32 ) -> Vec<u32> {
+    let mut prime_factors : Vec<u32> = Vec::new();
+    
+    for i in 2..num {
+        if num % i == 0 && is_prime(i) {
+            prime_factors.push(i);
+        }
+    }
+    prime_factors
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn check_prime_factors() {
+        let num = 123;
+        
+        assert_eq!( prime_factors(num) , vec![ 3, 41 ] , "prime factors of {} were incorrectly determined",num);
+    }
+}

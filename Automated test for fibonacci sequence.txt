@@ -1,0 +1,29 @@
+fn generate_fibonacci_sequence( nth : u32 ) -> Vec<u32> {
+    if nth == 1 { return vec![0]; }
+    if nth == 2 { return vec![0,1]; }
+    
+    let mut a = 0;
+    let mut b = 1;
+    let mut term = 3;
+    let mut fibo_vec = vec![ 0 , 1 ];
+    
+    while term <= nth {
+        b = b + a;
+        a = b - a;
+        term += 1;
+        fibo_vec.push(b);
+    }
+    fibo_vec
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_fibonacci_sequence() {
+        let nth = 7;
+        assert_eq!( generate_fibonacci_sequence(nth) , vec![ 0 , 1 , 1 , 2  , 3 , 5 , 8 ] , "fibonacci sequence was generated inaccurately");
+    }
+}

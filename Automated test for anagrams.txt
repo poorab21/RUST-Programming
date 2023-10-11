@@ -1,0 +1,51 @@
+use std::io;
+
+fn are_anagrams( mut s : String , mut s2 : String ) -> bool {
+    let mut i = 0;
+    let mut c1 = ' ';
+    let mut c2 = ' ';
+    let mut j = 0;
+
+    if s.len() != s2.len() { return false; }
+
+    while i < s.len() {
+        c1 = s.chars().nth(i).unwrap();
+        c2 = s2.chars().nth(i).unwrap();
+
+        if c1 == c2 { i += 1; continue; }
+
+        j = i + 1;
+        while j < s.len() {
+            if s.chars().nth(j).unwrap() == s2.chars().nth(i).unwrap() {
+                let sub = s.chars().nth(i).unwrap();
+                s.replace_range(i..i+1,format!("{}",s.chars().nth(j).unwrap()).as_str());
+                s.replace_range(j..j+1,format!("{}",sub).as_str());
+                break;
+            }
+            j += 1;
+        }
+
+        if j == s.len() { return false; }
+
+        i += 1;
+    }
+    true
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_are_anagrams() {
+        let mut words = ( "het manbat".to_string() , "the batman".to_string() );
+        assert_eq!( are_anagrams( (words.0).clone() , (words.1).clone() ) , true , "are_anagrams() denied {} and {} as anagrams",words.0,words.1);
+    }
+    
+    #[test]
+    fn check_are_not_anagrams() {
+        let mut words = ( "ravioli".to_string() , "violiao".to_string() );
+        assert_eq!( are_anagrams( words.0.clone() , words.1.clone() ) , false , "are_anagrams() incorrectly classified {} and {} as anagrams" , words.0, words.1 );
+    }
+}

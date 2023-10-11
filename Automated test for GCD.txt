@@ -1,0 +1,27 @@
+fn gcd( num1 : u32 , num2: u32 ) -> u32 {
+    let mut gcd = 0;
+    
+    for num in 1..=num1 {
+        if num1 % num == 0 && num2 % num == 0 {
+            gcd = num;
+        }
+    }
+    gcd
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_gcd() -> Result< () , Box< dyn std::error::Error > > {
+        let num1 = 20;
+        let num2 = 36;
+        
+        if gcd( num1 , num2 ) == 2 {
+            return Ok(())
+        }
+        Err(format!("GCD of {} and {} was calculated incorrectly",num1,num2).into())
+    }
+}

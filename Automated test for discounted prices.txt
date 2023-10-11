@@ -1,0 +1,20 @@
+fn discount_prices( prices : &Vec<f64> , discount_percent : f64 ) -> Vec<f64> {
+    prices.clone().into_iter().map( |price| format!("{:.2}",price - ( price * (discount_percent/100.0) ) ).trim().parse().unwrap()).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn check_discounted_prices() -> Result< () , Box< dyn std::error::Error > > {
+        let prices = vec![ 120.0 , 100.0 , 170.0 , 2890.0 ];
+        let discount_percent = 50.0;
+    
+        if discount_prices( &prices , discount_percent ) == vec![ 60.0 , 50.0 , 85.0 , 1445.0 ] {
+            return Ok(());
+        }
+        println!("{:?}",discount_prices(&prices,discount_percent));
+        Err("Discounted prices are inaccurate".into())
+    }
+}

@@ -1,0 +1,40 @@
+fn is_even( num : u32 ) -> bool {
+    num % 2 == 0
+}
+
+fn count_vowels( word : &str ) -> u32 {
+    let mut count = 0;
+    
+    for c in word.to_ascii_lowercase().trim().chars() {
+        if ['a','e','i','o','u'].contains(&c) {
+            count += 1;
+        }
+    }
+    count
+}
+
+#[cfg(test)] 
+mod tests {
+    
+    use super::*;
+    
+    #[test] 
+    #[ignore]
+    fn check_is_even() {
+        let x = 8;
+        assert_eq!( true , is_even(x) , "is_even() mistakenly denied {x} as an even number" );
+    }
+
+    #[test]
+    #[ignore]
+    fn check_is_not_even() {
+        let x = 5;
+        assert_eq!( is_even(x) , false , "is_even() misclassified {x} as an even number" );
+    }
+
+    #[test]
+    fn check_count_vowels() {
+        let word = "bajrangi bhaijaan";
+        assert_eq!( count_vowels(word) , 7 , "count_vowels miscounted the number of vowels in {word}" )
+    }
+}
