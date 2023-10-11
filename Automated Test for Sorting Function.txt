@@ -1,0 +1,43 @@
+fn sort( arr : &mut [i32] ) {
+    for i in 0..arr.len() {
+        for j in i+1..arr.len() {
+            if arr[i] > arr[j] {
+                arr[i] += arr[j];
+                arr[j] = arr[i] - arr[j];
+                arr[i] -= arr[j];
+            }
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test] 
+    fn check_sort_in_asc() {
+        let arr = &mut [ 100 , 200 , 300 , 400 ];
+        
+        sort(arr);
+        
+        assert_eq!( *arr , [ 100 , 200 , 300 , 400 ], "Sort() function is not working properly for input array already in ascending order" );
+    }
+    
+    #[test]
+    fn check_sort_in_desc() {
+        let arr = &mut [ 111 , 99 , 77 , 55 , 33 , 11 ];
+        
+        sort(arr);
+        
+        assert_eq!( *arr , [ 11 , 33 , 55 , 77 , 99 , 111 ] , "Sort() function is not working for input array in descending order" );
+    }
+    
+    #[test]
+    fn check_sort() {
+        let arr = &mut [ 1 , 1 , 1 , 1 ];
+        
+        sort(arr);
+        
+        assert_eq!( *arr , [ 1 , 1 , 1 , 1 ] , "Sort() function is not working properly"  );
+    }
+}

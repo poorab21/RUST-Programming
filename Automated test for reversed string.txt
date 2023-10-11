@@ -1,0 +1,16 @@
+fn reverse_string( s : &str ) -> String {
+    s.trim().chars().rev().collect()
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_reverse_string() {
+        let s = String::from("The Big Bang Theory");
+        
+        assert_eq!( reverse_string(&s) , "yroehT gnaB giB ehT" );
+    }
+}

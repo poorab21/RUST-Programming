@@ -1,0 +1,17 @@
+fn area_of_rec( width : f32 , length : f32 ) -> f32 {
+    format!("{:.2}",width * length).trim().parse().unwrap()
+}
+
+#[cfg(test)] 
+mod tests {
+    
+    use super::*;
+    
+    #[test] 
+    fn check_area_of_rec() {
+        let length : f32 = 1.13;
+        let width : f32 = 1.819;
+        
+        assert_eq!( area_of_rec( width , length ) ,2.06 , "area_of_rec() incorrectly determined area of rectangle with length {} and width {}" , length , width );
+    }
+}

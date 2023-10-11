@@ -1,0 +1,14 @@
+fn average( arr : &[f64] ) -> f64 {
+    format!("{:.2}",arr.iter().sum::<f64>() / (arr.len() as f64)).trim().parse().unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_average() {
+        assert_eq!( average(&[ 11.7 , 74.0 , 12.2 , 67.3 , 12.0 , 45.3 ]) , 37.08 )
+    }
+}

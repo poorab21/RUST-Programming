@@ -1,0 +1,24 @@
+fn factorial( num : u32 ) -> u32 {
+    let mut fac = 1;
+    
+    for i in (1..=num).rev() {
+        fac *= i;
+    }
+    fac
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn check_fac_zero() {
+        assert_eq!( factorial(0) , 1 , "Factorial of 0 is not equating to 1" );
+    }
+    
+    #[test]
+    fn check_fac() {
+        let x = 7;
+        assert_eq!( factorial(x) , 5040u32 , "Factorial of {} is determined incorrectly", x );
+    }
+}

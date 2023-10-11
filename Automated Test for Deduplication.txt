@@ -1,0 +1,31 @@
+fn already_exists( arr : &Vec<i32> , index : usize ) -> bool {
+    for i in 0..index {
+        if arr[i] == arr[index] { return true; }
+    }
+    false
+}
+
+fn remove_duplicates( arr : &mut Vec<i32> ) {
+    let mut i = 0;
+    
+    while i < arr.len() {
+        if already_exists(arr,i) {
+            arr.remove(i);
+            continue;
+        }
+        i += 1;
+    }
+}
+
+#[cfg(test)] 
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_remove_duplicates() {
+        let mut vec = vec![ 310 , 310 , 256 , 256 , 256 , 189 , 189 ];
+        remove_duplicates(&mut vec);
+        assert_eq!( vec![ 310 , 189 ] , vec , "remove_duplicates() failed to remove duplicates" );
+    }
+}

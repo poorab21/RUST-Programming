@@ -1,0 +1,27 @@
+use regex::Regex;
+
+fn validate_email( email : &str ) -> bool {
+    let email_format = Regex::new(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").unwrap();
+    if let None = email_format.find(email) { false }
+    else { true }
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test] 
+    fn check_correct_email() {
+        let input = "poorabgangwani19@hotmail123.com";
+        
+        assert_eq!( true , validate_email( input ) , "validate_email() is not verifying format of input email properly");
+    }
+    
+    #[test]
+    fn check_wrong_email() {
+        let input = "poorabgangwanigmailcom";
+        
+        assert_eq!( validate_email( input ) , false , "validate_email() is telling an incorrect email format as correct");
+    }
+}

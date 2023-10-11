@@ -1,0 +1,21 @@
+fn divide( a : f64 , b : f64 ) -> f64 {
+    if b == 0.0 { panic!("Division by Zero Error"); }
+    format!("{:.2}",(a/b)).trim().parse().unwrap()
+}
+
+#[cfg(test)] 
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_divide() {
+        assert_eq!( divide( 655.0 , 42.0 ) , 15.6 );
+    }
+    
+    #[test]
+    #[ should_panic( expected = "Division by Zero" ) ]
+    fn check_divide_by_zero() {
+        divide( 2.0 , 0.0 );
+    }
+}

@@ -1,0 +1,25 @@
+fn is_prime( num : u32 ) -> bool {
+    if num <= 1 { return false; } 
+    
+    for i in 2..num {
+        if num % i == 0 { return false; }
+    }
+    true
+}
+
+#[ cfg(test) ]
+mod tests {
+    use super::*;
+    
+    #[test] 
+    fn check_is_prime() {
+        let x = 167;
+        assert_eq!( true , is_prime(x));
+    }
+    
+    #[test]
+    fn check_is_not_prime() {
+        let x = 69;
+        assert_ne!( true , is_prime(x) );
+    }
+}

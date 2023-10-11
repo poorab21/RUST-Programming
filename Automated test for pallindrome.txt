@@ -1,0 +1,24 @@
+fn is_pallindrome( input : &str ) -> bool {
+    input.trim().chars().rev().collect::<String>() == input.trim().to_string()
+}
+
+#[cfg(test)]
+mod tests {
+    
+    use super::*;
+    
+    #[test]
+    fn check_is_pallindrome() {
+        let word = "racecar";
+        assert_eq!(is_pallindrome(word) , true , "{} was mistaken not to be a pallindrome", word);
+    }
+    
+    #[test]
+    fn check_not_pallindrome() -> Result< (), Box<dyn std::error::Error>> {
+        let word = "keyek madam";
+        if is_pallindrome( word ) == false {
+            return Ok(());
+        }
+        Err(format!("{} was erroneously classified as pallindrome",word).into())
+    }
+}

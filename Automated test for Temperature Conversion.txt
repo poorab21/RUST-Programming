@@ -1,0 +1,14 @@
+fn to_fahrenheit( celsius : f32 ) -> f32 {
+    format!("{:.1}",( celsius * ((9f32/5f32)) ) + 32f32 as f32).trim().parse().unwrap()
+}
+
+#[cfg(test)]
+mod test {
+    
+    use super::*;
+    
+    #[ test ] 
+    fn check_conversion() {
+        assert_eq!( 454.3 , to_fahrenheit(234.6) , "to_fahrenheit() function is not converting celsius accurately to fahrenheit");
+    }
+}

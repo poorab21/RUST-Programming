@@ -1,0 +1,13 @@
+fn sum_of_array( arr : &[i32] ) -> i32 {
+    arr.iter().sum()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test] 
+    fn check_sum_of_array() {
+        assert_eq!( 167 , sum_of_array( &[ 41 , 43 , 22 , 61 ] ) );
+    }
+}
