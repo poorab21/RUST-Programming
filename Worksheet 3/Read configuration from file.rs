@@ -1,0 +1,52 @@
+use std::fs::File;
+use std::collections::HashMap;
+use std::io::{ Read , ErrorKind };
+use regex::Regex;
+
+fn to_hashmap( configs : String ) -> Result< HashMap<String,String> , String > {
+    let mut keys : Vec<String> = Vec::new();
+    let mut values : Vec<String> = Vec::new();
+    let mut temp : Vec<&str> = Vec::new();
+    let mut key_value_syntax = Regex::new("^[a-zA-Z]+$").unwrap();
+
+    for configurations in configs.split(",") {
+
+        if configurations.len() == 0 { return Err("Problem in config file format".into()); }
+
+        if !configurations.contains(":") {
+            return Err("Problem in config file format".into());
+        }
+    
+        temp = configurations.split(":").collect::<Vec<&str>>();
+        
+        if key_value_syntax.find(temp[0].trim()).is_none() || key_value_syntax.find(temp[1].trim()).is_none() {
+            return Err("Problem in config file format".into())
+        }
+        
+        keys.push(temp[0].trim().to_string());
+        
+
+        values.push(temp[1].trim().to_string());
+    }
+
+    Ok(keys.into_iter().zip( values.into_iter() ).collect())
+}
+
+fn read_config_file( filename : &str ) -> Result< HashMap<String,String> , String > {
+    let mut file = File::open(filename);
+    let mut configs = String::new();
+
+    if let Ok(mut opened_file) = file {
+       
+        match opened_file.read_to_string( &mut configs ) {
+            Ok(_) => return to_hashmap( configs ) ,
+            Err(e) => return Err(format!("{:?}",e))
+        }
+    };
+
+    Err("File could not be opened or does not exist".into())
+}
+
+fn main() {
+    println!("{:?}",read_config_file(r"C:\Users\SAIF UR REHMAN\Desktop\RUST Training\week4\src\file.txt"));
+}
