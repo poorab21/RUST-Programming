@@ -1,0 +1,26 @@
+struct Book {
+    title : String
+}
+
+impl Book {
+    fn new( title : String ) -> Self {
+        Self {
+            title 
+        }
+    }
+    
+    fn get_title( &self ) -> &str {
+        &self.title
+    }
+    
+    fn set_title( &mut self , title : String ) {
+        self.title = title;
+    }
+}
+
+fn main() {
+    let book1 = Book::new("Book name".to_string());
+    
+    println!("{}",book1.get_title());
+    
+}

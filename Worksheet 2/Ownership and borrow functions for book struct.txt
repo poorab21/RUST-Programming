@@ -1,0 +1,55 @@
+#[derive(Debug)]
+struct Book {
+    title : String ,
+    pages : u32 , 
+    author : String
+}
+
+impl Book {
+    fn new( title : String , pages : u32 , author : String ) -> Self {
+        Self {
+            title ,
+            pages ,
+            author 
+        }
+    }
+    
+    fn title( &self ) -> &str {
+        &self. title
+    }
+    
+    fn pages( &self ) -> u32 {
+        self.pages
+    }
+    
+    fn author( &self ) -> &str {
+        &self.author
+    }
+
+    fn set_title( &mut self , title : String ) {
+        self.title = title;
+    }
+    
+    fn set_author( &mut self , author : String ) {
+        self.author = author;
+    }
+    
+    fn set_pages( &mut self , pages : u32 ) {
+        self.pages = pages;
+    }
+}
+
+fn take_ownership_and_return_title( book : Book ) -> String {
+    book.title
+}
+
+fn borrow_and_modify_title( book : &mut Book ) {
+    book.set_title("new book title".to_string());
+}
+
+fn main() {
+    let mut book1 = Book::new( "Book 1".to_string() , 200 , "author name".to_string() );
+    //take_ownership_and_return_title( book1 );
+    borrow_and_modify_title( &mut book1 );
+    println!("{:?}",book1.title());
+}

@@ -1,0 +1,61 @@
+enum Status {
+    Active ,
+    Inactive ,
+    Suspended
+}
+
+struct Book {
+    title : String ,
+    pages : u32 , 
+    author : String
+}
+
+impl Book {
+    fn new( title : String , pages : u32 , author : String ) -> Self {
+        Self {
+            title ,
+            pages ,
+            author 
+        }
+    }
+    
+    fn title( &self ) -> &str {
+        &self. title
+    }
+    
+    fn pages( &self ) -> u32 {
+        self.pages
+    }
+    
+    fn author( &self ) -> &str {
+        &self.author
+    }
+
+    fn set_title( &mut self , title : String ) {
+        self.title = title;
+    }
+    
+    fn set_author( &mut self , author : String ) {
+        self.author = author;
+    }
+    
+    fn set_pages( &mut self , pages : u32 ) {
+        self.pages = pages;
+    }
+}
+
+fn title_and_status<'a,'b>( book : &'a Book , status : &'b Status ) -> ( &'a str , &'b str ) {
+    match status {
+        Status::Active => ( book.title() , "Active" ) ,
+        Status::Inactive => ( book.title() , "Inactive" ) ,
+        Status::Suspended => ( book.title() , "Suspended" )
+    }
+}
+
+fn main() {
+    let mut book1 = Book::new( "Book 1".to_string() , 200 , "author name".to_string() );
+    book1.set_title("The RUST Programming Language".to_string());
+    
+    println!("{}",book1.title());
+    println!("{:#?}",title_and_status(&book1, &Status::Active ));
+}

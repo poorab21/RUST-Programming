@@ -1,0 +1,12 @@
+struct Person {
+    name : String ,
+    age : u32
+}
+
+fn main() {
+    let mut person1 = Person {
+        name: String::from("Poorab Gangwani") ,
+        age : 22
+    };
+    println!("{}",person1.name);
+}
