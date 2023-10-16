@@ -1,0 +1,16 @@
+use std::io;
+
+fn main() {
+    let mut s = String::new();
+    let mut new_sentence = String::new();
+    
+    println!("Enter Sentence:");
+    io::stdin().read_line(&mut s).expect("Something went wrong while processing input for sentence");
+    s.pop();
+    
+    for word in s.split_whitespace().rev() {
+        new_sentence.push_str(format!("{} ",word).as_str());
+    }
+    
+    println!("New Sentence = {}",new_sentence);
+}
