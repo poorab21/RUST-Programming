@@ -1,0 +1,24 @@
+use std::thread;
+use std::time::Duration;
+
+fn main() {
+    let even_num_thread = thread::spawn(
+        || {
+            for i in 0..=10 {
+                if i % 2 == 0 {
+                    println!("{}",i);
+                    thread::sleep(Duration::from_millis(5));
+                }
+            }
+        }
+    );
+    
+    for i in 0..=10 {
+        if i % 2 != 0 { 
+            println!("{}",i);
+            thread::sleep(Duration::from_millis(5));
+        }
+    }
+    
+    even_num_thread.join().unwrap()
+}
