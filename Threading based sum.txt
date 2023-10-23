@@ -1,0 +1,37 @@
+use std::io;
+use std::thread;
+use std::sync::{ Mutex , Arc };
+
+fn main() {
+    let sum = Arc::new( Mutex::new(0) );
+    let mut number = String::from("");
+    
+    loop {
+        number.clear();
+        
+        println!("Enter Number:");
+        io::stdin().read_line( &mut number ).expect("Something went wrong while processing input for number");
+        number.pop();
+        
+        if let Err(_) = number.trim().parse::<i32>() {
+            println!("please enter proper number");
+            continue;
+        }
+        
+        let number : i32 = number.trim().parse().unwrap();
+        
+        if number < 0 {
+            break;
+        }
+        
+        let mut num = number.clone();
+        let mut sum_clone = Arc::clone( &sum );
+        thread::spawn(
+            move || {
+                *(sum_clone.lock().unwrap()) += num;
+            }
+        );
+        
+    }
+    println!("Sum = {}",*(sum.lock().unwrap()));
+}
