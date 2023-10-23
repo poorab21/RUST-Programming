@@ -1,0 +1,68 @@
+use std::thread;
+use std::sync::{ Mutex , Arc };
+
+#[derive(Debug)]
+struct BankAccount {
+    balance : u32
+}
+
+impl BankAccount {
+    
+    fn new() -> Self {
+        Self {
+            balance : 0
+        }
+    }
+    
+    fn deposit( &mut self , amount : u32 ) {
+        self.balance += amount;
+    }
+    
+    fn withdraw( &mut self , amount : u32 ) {
+        if self.balance >= amount {
+            self.balance -= amount;
+        }
+        else {
+            println!("amount exceeds current balance");
+        }
+    }
+    
+    fn balance( &self ) -> u32 {
+        self.balance
+    }
+}
+
+fn main() {
+    let account = Arc::new( Mutex::new( BankAccount::new() ) );
+    
+    let account_clone_1 = Arc::clone( &account );
+    let account_clone_2 = Arc::clone( &account );
+    let account_clone_3 = Arc::clone( &account );
+    
+    let holder1 = thread::spawn(
+        move || {
+            let mut access = account_clone_1.lock().unwrap();
+            (*access).deposit(19000);
+        }
+    );
+    
+    let holder2 = thread::spawn(
+        move || {
+            let mut access = account_clone_2.lock().unwrap();
+            (*access).withdraw(5000);
+        }
+    );
+    
+    let holder3 = thread::spawn(
+        move || {
+            let mut access = account_clone_3.lock().unwrap();
+            (*access).withdraw(1300);
+        }
+    );
+    
+    holder1.join().unwrap();
+    holder2.join().unwrap();
+    holder3.join().unwrap();
+    
+    println!("Account balance = {:#?}",*(account.lock().unwrap()))
+}
