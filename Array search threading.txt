@@ -1,0 +1,63 @@
+use std::io;
+use std::thread;
+
+fn main() {
+    let mut arr : [ i32 ; 6 ] = [ 1 , 2 , 3 , 1 , 2 , 1 ];
+    let mut search = String::from("");
+    
+    loop {
+        search.clear();
+        
+        println!("Enter Number to search :");
+        io::stdin().read_line( &mut search ).expect("Something went wrong while processing input for number to search");
+        search.pop();
+        
+        if let Err(_) = search.trim().parse::<i32>() {
+            println!("Enter number to search properly");
+            continue;
+        }
+        
+        let s1 = search.clone();
+        let search1 = thread::spawn( move || {
+            let portion = &arr[0..2];
+            let result = portion.iter().position( |&x| x == s1.trim().parse::<i32>().unwrap() );
+            
+            if let None = result { 
+                println!("Thread 1 could not find the number in array");
+            }
+            else if let Some(index) = result {
+                println!("Thread 1 found the number at index {} in array",index);
+            }
+        } );
+        
+        let s2 = search.clone();
+        let search2 = thread::spawn( move || {
+            let portion = &arr[2..4];
+            let result = portion.iter().position( |&x| x == s2.trim().parse::<i32>().unwrap() );
+            
+            if let None = result { 
+                println!("Thread 2 could not find the number in array");
+            }
+            else if let Some(index) = result {
+                println!("Thread 2 found the number at index {} in array",index+2);
+            }
+        } );
+        
+        let s3 = search.clone();
+        let search3 = thread::spawn( move || {
+            let portion = &arr[4..6];
+            let result = portion.iter().position( |&x| x == s3.trim().parse::<i32>().unwrap() );
+            
+            if let None = result { 
+                println!("Thread 3 could not find the number in array");
+            }
+            else if let Some(index) = result {
+                println!("Thread 3 found the number at index {} in array",index+4);
+            }
+        });
+        
+        search1.join().unwrap();
+        search2.join().unwrap();
+        search3.join().unwrap();
+    }
+}

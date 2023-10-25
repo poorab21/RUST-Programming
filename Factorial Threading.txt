@@ -1,0 +1,16 @@
+use std::thread;
+
+fn main() {
+    let number = 0;
+    
+    let fac_thread = thread::spawn( move || {
+        let mut fac = 1;
+        for i in (1..=number).rev() {
+            fac *= i;
+        }
+        
+        println!("Factorial of {number} = {fac}");
+    });
+    
+    fac_thread.join().unwrap();
+}

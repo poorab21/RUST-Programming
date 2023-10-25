@@ -1,0 +1,137 @@
+use std::sync::{ Mutex , Arc };
+use std::thread;
+use std::time::Duration;
+
+#[derive(Debug)]
+struct Table {
+    number : u32 ,
+    capacity : u32 ,
+    availability : bool
+}
+
+impl Table {
+    fn new( number : u32 , capacity : u32 ) -> Self {
+        Self {
+            number ,
+            capacity ,
+            availability : true
+        }
+    }
+    
+    fn number( &self ) -> u32 {
+        self.number
+    }
+    
+    fn capacity( &self ) -> u32 {
+        self.capacity
+    }
+    
+    fn availability( &self ) -> bool {
+        self.availability
+    }
+    
+    fn set_number( &mut self , number : u32 ) {
+        self.number = number;
+    }
+    
+    fn set_capacity( &mut self , capacity : u32 ) {
+        self.capacity = capacity;
+    }
+    
+    fn set_availability( &mut self , availability : bool ) {
+        self.availability = availability;
+    }
+}
+
+struct Restaurant {
+    tables : Vec<Table>
+}
+
+impl Restaurant {
+    fn new() -> Self {
+        Self {
+            tables : Vec::new()
+        }
+    }
+    
+    fn tables( &self ) -> &Vec<Table> {
+        &self.tables
+    }
+    
+    fn new_table( &mut self , capacity : u32 ) {
+        self.tables.push( Table::new( (self.tables.len() as u32) + 1 , capacity ) );
+    }
+    
+    fn assign_table( &mut self , required_size : u32 ) -> Option<u32> {
+        let tb = self.tables.iter_mut().find( |table| table.availability() && table.capacity() >= required_size )?;
+        tb.set_availability(false);
+        Some(tb.number)
+    }
+    
+    fn clear_table( &mut self , table_num : u32 ) {
+        let mut table = self.tables.iter_mut().find( |table| table.number == table_num );
+        
+        if let None = table {
+            println!("Table with specified number does not exist");
+            return;
+        }
+        
+        table.unwrap().set_availability(true);
+    }
+}
+
+fn main() {
+    let mut restaurant1 = Arc::new(Mutex::new(Restaurant::new()));
+    
+    restaurant1.lock().unwrap().new_table( 12 );
+    restaurant1.lock().unwrap().new_table( 25 );
+    restaurant1.lock().unwrap().new_table( 10 );
+    
+    let res = Arc::clone( &restaurant1 );
+    let res1 = Arc::clone( &restaurant1 );
+    let res2 = Arc::clone( &restaurant1 );
+    
+    let customer1 = thread::spawn(
+        move || {
+            let table_status = res.lock().unwrap().assign_table(4);
+          
+            if let None = table_status {
+                println!("No table with enough capacity to hold 4 people");
+            }
+            else if let Some(number) = table_status {
+                println!("Table with number {} assigned",number);
+            }
+        }
+    );
+    
+    let customer2 = thread::spawn(
+        move || {
+        
+            let table_status = res1.lock().unwrap().assign_table(15);
+         
+            if let None = table_status {
+                println!("No table with enough capacity to hold 15 people");
+            }
+            else if let Some(number) = table_status {
+                println!("Table with number {} assigned",number);
+            }
+        }
+    );
+    
+    let customer3 = thread::spawn(
+        move || {
+            let table_status = res2.lock().unwrap().assign_table(10);
+            
+            if let None = table_status {
+                println!("No table with enough capacity to hold 10 people");
+            }
+            else if let Some(num) = table_status {
+                println!("Table with number {num} assigned");
+            }
+        }
+    );
+    
+    customer1.join().unwrap();
+    customer2.join().unwrap();
+    customer3.join().unwrap();
+}
