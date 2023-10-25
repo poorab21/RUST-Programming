@@ -1,0 +1,53 @@
+use rand::Rng;
+use std::thread::{ self , JoinHandle };
+use std::sync::{ Arc , Mutex };
+use std::time::Duration;
+
+fn generate_number( buf_access1 : Arc<Mutex<Vec<i32>>> ) -> JoinHandle<()> {
+    thread::spawn(
+        move || {
+            let mut random = rand::thread_rng().gen_range( -128..127 );
+            Duration::from_millis(1);
+            let mut buf = buf_access1.lock();
+            
+            if let Ok(mut vec) = buf {
+                vec.push(random);
+                println!("Thread 1 generated {}",random);
+            }
+        }
+    )
+}
+
+fn consume_number( buf_access2 : Arc<Mutex<Vec<i32>>> ) -> JoinHandle<()> {
+    thread::spawn(
+        move || {
+            Duration::from_millis(1);
+            let mut buffer = buf_access2.lock();
+            
+            if let Ok( mut vec ) = buffer {
+                if vec.len() > 0 {
+                    let index = rand::thread_rng().gen_range( 0..vec.len() );
+                    println!("Thread 2 consumed {}",vec.remove(index));
+                }
+                else { println!("Thread 2 found nothing to consume");  }
+            }
+        }
+    )
+}
+
+fn main() {
+    let buffer = Arc::new( Mutex::new(Vec::<i32>::new()) );
+    let mut handles : Vec<JoinHandle<()>> = Vec::new();
+    
+    for _ in 0..10 {
+        let buf_access1 = Arc::clone( &buffer );
+        let buf_access2 = Arc::clone( &buffer );
+        
+        handles.push(generate_number(buf_access1));
+        handles.push(consume_number(buf_access2));
+    }
+    
+    for handle in handles {
+        handle.join().unwrap();
+    }
+}

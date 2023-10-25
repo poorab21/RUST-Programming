@@ -1,0 +1,29 @@
+use std::io;
+use std::thread;
+use std::sync::{ mpsc };
+
+fn main() {
+    let ( tx , rx ) = mpsc::channel();
+    
+    thread::spawn( move || {
+        let mut message = String::from("");
+        
+        loop {
+             let mut message = String::from("");
+            
+            io::stdin().read_line( &mut message ).expect("Something went wrong while processing the input message");
+            message.pop();
+            
+            if message.trim().len() == 0 {
+                break;
+            }
+            
+            tx.send( message );
+        }
+        
+    });
+    
+    for received in rx {
+        println!("received a message from thread = {}",received);
+    }
+}
