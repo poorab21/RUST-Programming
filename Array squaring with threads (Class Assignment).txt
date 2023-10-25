@@ -1,0 +1,120 @@
+use std::sync::{ Arc , Mutex };
+use std::thread;
+use rand::Rng;
+
+fn main() {
+    let mut random = rand::thread_rng();
+
+    let mut arr = Arc::new( Mutex::new( [ 0 ; 100 ] ) );
+    let arr_clone1 = Arc::clone( &arr );
+    let arr_clone2 = Arc::clone( &arr );
+    let arr_clone3 = Arc::clone( &arr );
+    let arr_clone4 = Arc::clone( &arr );
+    let arr_clone5 = Arc::clone( &arr );
+    let arr_clone6 = Arc::clone( &arr );
+    let arr_clone7 = Arc::clone( &arr );
+    let arr_clone8 = Arc::clone( &arr );
+    let arr_clone9 = Arc::clone( &arr );
+    let arr_clone10 = Arc::clone( &arr );
+
+    {
+        let mut a = arr.lock().unwrap();
+        for i in 0..100 {
+            a[i] = random.gen_range(1..100);
+        }
+        println!("{:?}\n",a);
+    }
+
+    let first = thread::spawn( move || {
+        let mut arr = arr_clone1.lock().unwrap();
+        
+        for i in 0..10 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let second = thread::spawn( move || {
+        let mut arr = arr_clone2.lock().unwrap();
+        
+        for i in 10..20 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let third = thread::spawn( move || {
+        let mut arr = arr_clone3.lock().unwrap();
+        
+        for i in 20..30 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+    
+    let fourth = thread::spawn( move || {
+        let mut arr = arr_clone4.lock().unwrap();
+        
+        for i in 30..40 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let fifth = thread::spawn( move || {
+        let mut arr = arr_clone5.lock().unwrap();
+        
+        for i in 40..50 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let sixth = thread::spawn( move || {
+        let mut arr = arr_clone6.lock().unwrap();
+        
+        for i in 50..60 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let seventh = thread::spawn( move || {
+        let mut arr = arr_clone7.lock().unwrap();
+        
+        for i in 60..70 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let eighth = thread::spawn( move || {
+        let mut arr = arr_clone8.lock().unwrap();
+        
+        for i in 70..80 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let ninth = thread::spawn( move || {
+        let mut arr = arr_clone9.lock().unwrap();
+        
+        for i in 80..90 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    let tenth = thread::spawn( move || {
+        let mut arr = arr_clone10.lock().unwrap();
+        
+        for i in 90..100 {
+            arr[i] = arr[i] * arr[i];
+        }
+    } );
+
+    first.join().unwrap();
+    second.join().unwrap();
+    third.join().unwrap();
+    fourth.join().unwrap();
+    fifth.join().unwrap();
+    sixth.join().unwrap();
+    seventh.join().unwrap();
+    eighth.join().unwrap();
+    ninth.join().unwrap();
+    tenth.join().unwrap();
+    println!("{:?}",arr.lock().unwrap());
+    
+}

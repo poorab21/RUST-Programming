@@ -1,0 +1,52 @@
+use std::thread;
+use std::sync::{ Arc , mpsc };
+
+fn main() {
+    let factorial = 10;
+    let ( tx , rx ) = mpsc::channel();
+    let tx1 = tx.clone();
+    let tx2 = tx.clone();
+    let mut fac = 1;
+    
+    thread::spawn(
+        move || {
+            let mut sub_product = 1;
+            
+            for i in 1..=( factorial / 3 ) {
+                sub_product *= i;
+            }
+            tx1.send(sub_product);
+        }
+    );
+    
+    thread::spawn(
+        move || {
+            let mut sub_product = 1;
+            
+            for i in ( factorial / 3 ) + 1..=( factorial / 3 ) * 2 {
+                sub_product *= i;
+            }
+            tx2.send(sub_product);
+        }
+    );
+    
+    thread::spawn(
+        move || {
+            let mut i = (( factorial / 3 ) * 2) + 1;
+            let mut sub_product = 1;
+            
+            while i <= factorial {
+                sub_product *= i;
+                i += 1;
+            }
+            
+            tx.send( sub_product );
+        }
+    );
+    
+    for received in rx {
+        fac *= received;
+    }
+    
+    println!("Factorial = {}",fac);
+}

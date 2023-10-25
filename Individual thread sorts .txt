@@ -1,0 +1,67 @@
+use std::thread;
+use std::sync::mpsc;
+
+fn main() {
+    let ( tx , rx ) = mpsc::channel::<[ i32 ; 2 ]>();
+    let mut arr = [ 1 , 21 , 13 , 17 , 5 , 5 ];
+    let tx1 = tx.clone();
+    let tx2 = tx.clone();
+    
+    thread::spawn(
+        move || {
+            let mut portion = arr[0..2].to_vec();
+            
+            for i in 0..portion.len() { 
+                for j in 0..portion.len()-i-1 { 
+                    if portion[j] > portion[j+1] { 
+                        portion.swap(j, j+1); 
+                    } 
+                } 
+            }
+            
+            let portion : [ i32 ; 2 ] = portion.try_into().unwrap();
+            tx1.send(portion);
+        }
+    );
+    
+    thread::spawn(
+        move || {
+            let mut portion = arr[2..4].to_vec();
+            
+            let len = portion.len();
+            for i in 0..len { 
+                let mut min_index = i; 
+                
+                for j in (i + 1)..len { 
+                    if portion[j] < portion[min_index] {
+                        min_index = j; 
+                    } 
+                } 
+                
+                if min_index != i { 
+                    portion.swap(i, min_index); 
+                } 
+            }
+            tx2.send( portion.try_into().unwrap() );
+        }
+    );
+    
+    thread::spawn(
+        move || {
+            let mut portion = arr[4..6].to_vec();
+            
+            portion.sort();
+            
+            tx.send( portion.try_into().unwrap() );
+        }
+    );
+    
+    let mut vec : Vec<i32> = Vec::new();
+    
+    for received in rx {
+        vec.extend( &received.to_vec() );
+        println!("{:?}",vec);
+    }
+    vec.sort();
+    println!("{:?}",vec);
+}

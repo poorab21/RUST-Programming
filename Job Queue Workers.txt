@@ -1,0 +1,76 @@
+use std::thread;
+use std::sync::{ Mutex , Arc };
+use std::time::Duration;
+
+fn main() {
+    let job_queue = Arc::new(Mutex::new(vec![
+        "T1" ,
+        "T2" ,
+        "T3" ,
+        "T4" ,
+        "T5" ,
+        "T6" ,
+        "T7"
+    ]));
+    
+    let job_queue_access1 = Arc::clone( &job_queue );
+    let job_queue_access2 = Arc::clone( &job_queue );
+    let job_queue_access3 = Arc::clone( &job_queue );
+  
+    let worker1 = thread::spawn(
+       move || {
+            loop {
+                thread::sleep(Duration::from_millis(2));
+                
+                if let Ok(mut job_queue) = job_queue_access1.lock() {
+                    if job_queue.is_empty() {
+                        break;
+                    }
+                    else {
+                        println!("Thread 1 performed {:?}",job_queue.pop());
+                    }
+                }
+            }
+        }
+    );
+    
+    let worker2 = thread::spawn(
+       move || {
+            loop {
+                thread::sleep(Duration::from_millis(2));
+            
+                if let Ok(mut job_queue) = job_queue_access2.lock() {
+                    if job_queue.is_empty() {
+                        break;
+                    }
+                    else {
+                        println!("Thread 2 performed {:?}",job_queue.pop());
+                    }
+                }
+            }
+        }
+    );
+    
+    let worker3 = thread::spawn(
+       move || {
+            loop {
+                thread::sleep(Duration::from_millis(2));
+                
+                if let Ok(mut job_queue) = job_queue_access3.lock() {
+                    if job_queue.is_empty() {
+                        break;
+                    }
+                    else {
+                        println!("Thread 3 performed {:?}",job_queue.pop());
+                    }
+                }
+            }
+        }
+    );
+    
+    worker1.join().unwrap();
+    worker2.join().unwrap();
+    worker3.join().unwrap();
+    
+    println!("Success");
+}

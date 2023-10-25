@@ -1,0 +1,45 @@
+use std::thread;
+use std::sync::{ Arc , Mutex };
+use std::collections::HashMap;
+
+fn main() {
+    let hashmap = Arc::new( Mutex::new( HashMap::<&str,u32>::new() ) );
+    let hashmap_access1 = Arc::clone( &hashmap );
+    let hashmap_access2 = Arc::clone( &hashmap );
+    let hashmap_access3 = Arc::clone( &hashmap );
+    let hashmap_access4 = Arc::clone( &hashmap );
+    
+    let writer1 = thread::spawn(
+        move || {
+            let mut hashmap = hashmap_access1.lock().unwrap();
+            *(hashmap.entry("one").or_insert(4)) = 16;
+        }
+    );
+    
+    let reader1 = thread::spawn(
+        move || {
+            let mut hashmap = hashmap_access2.lock().unwrap();
+            println!("value at key (one) = {:?}",hashmap.entry("one").or_insert(1));
+        }
+    );
+    
+    let writer3 = thread::spawn(
+       move || {
+            let mut hashmap = hashmap_access3.lock().unwrap();
+            *(hashmap.entry("one").or_insert(8)) = 5;
+        }
+    );
+    
+    let writer2 = thread::spawn(
+        move || {
+            let mut h = hashmap_access4.lock().unwrap();
+            *(h.entry("two").or_insert(14)) = 32;
+        }
+    );
+    
+    reader1.join().unwrap();
+    writer1.join().unwrap();
+    writer3.join().unwrap();
+    writer2.join().unwrap();
+    println!("{:?}",hashmap.lock().unwrap());
+}

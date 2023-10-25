@@ -1,0 +1,56 @@
+use std::thread;
+use std::sync::{ Arc , Mutex };
+
+fn main() {
+    let vector = Arc::new( Mutex::new( Vec::<i32>::new() ) );
+    let mut vec_length = 0;
+    {
+        let mut vec_access = vector.lock().unwrap();
+        let mut starting_num = 5;
+        let mut ending_num = 10;
+        
+        for i in starting_num..=ending_num {
+            vec_access.push(i);
+        }
+        vec_length = vec_access.len();
+        println!("{:?}",vec_access);
+    }
+    let vec_access1 = Arc::clone( &vector );
+    let vec_access2 = Arc::clone( &vector );
+    let vec_access3 = Arc::clone( &vector );
+    
+    let thread1 = thread::spawn(
+        move || {
+            let mut vec_portion = vec_access1.lock().unwrap();
+            
+            for i in 0..(  vec_length / 3 ) {
+                vec_portion[i] *= vec_portion[i];
+            }
+        }
+    );
+    
+    let thread2 = thread::spawn(
+        move || {
+            let mut vec_portion = vec_access2.lock().unwrap();
+            
+            for i in (  vec_length / 3 )..( vec_length / 3 ) * 2 {
+                vec_portion[i] *= vec_portion[i];
+            }
+        }
+    );
+    
+    let thread3 = thread::spawn(
+        move || {
+            let mut vec_portion = vec_access3.lock().unwrap();
+            
+            for i in 2*( vec_length / 3 )..vec_portion.len() {
+                vec_portion[i] *= vec_portion[i];
+            }
+        }
+    );
+    
+    thread1.join().unwrap();
+    thread2.join().unwrap();
+    thread3.join().unwrap();
+    println!("{:?}",vector.lock().unwrap());
+}
