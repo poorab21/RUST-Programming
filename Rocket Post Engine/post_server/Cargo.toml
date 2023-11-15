@@ -1,0 +1,15 @@
+[package]
+name = "post_server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+rocket = { version = "0.4.11" }
+rocket_codegen = "0.4.11"
+postlib = { path = "../postlib" }
+rusqlite = { version = "0.29.0" , features = ["bundled"] }
+tokio = "1.33.0"
+serde = { version = "1.0.190" , features = ["derive"] }
+rocket_contrib = "0.4.11"
