@@ -1,0 +1,4 @@
+Filename = file.txt
+Description = file description
+From = 191.111.121.23
+Accessibility = PUBLIC
