@@ -1,0 +1,4 @@
+Filename = file.txt
+Description = duplicate file description
+From = 191.111.121.24
+Accessibility = PUBLIC
